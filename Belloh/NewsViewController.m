@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSMutableArray *posts;
 @property (nonatomic, strong) BLMap *map;
+@property (nonatomic, strong) CLGeocoder *geocoder;
 
 @property (nonatomic, weak) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
@@ -34,14 +35,16 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     self.posts = [NSMutableArray array];
+    self.geocoder = [[CLGeocoder alloc] init];
 
     [NewsViewController removeShadowImageFromNavBar:self.navBar];
     
-    CLLocationCoordinate2D location = CLLocationCoordinate2DMake(30.155960086365063,0);
+    CLLocationCoordinate2D locationCoordinate = CLLocationCoordinate2DMake(30.155960086365063,0);
     MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
     
-    self.map = [BLMap mapWithRegion:MKCoordinateRegionMake(location, span)];
+    self.map = [BLMap mapWithRegion:MKCoordinateRegionMake(locationCoordinate, span)];
     [self BL_loadPostsForRegion:self.map.region];
+    [self BL_setNavBarTitleToLocationName];
 }
 
 - (void)didReceiveMemoryWarning
@@ -105,6 +108,7 @@
     self.map.region = region;
     [self.posts removeAllObjects];
     [self BL_loadPostsForRegion:region];
+    [self BL_setNavBarTitleToLocationName];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -197,6 +201,24 @@
             [self.tableView reloadData];
         });
     });
+}
+
+- (void)BL_setNavBarTitleToLocationName
+{
+    CLLocationCoordinate2D center = self.map.region.center;
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:center.latitude longitude:center.longitude];
+    
+    [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error){
+        if (error)
+        {
+            return NSLog(@"Error geocoding: %@",error);
+        }
+        
+        CLPlacemark *placemark = placemarks[0];
+        NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.name, placemark.locality, placemark.country];
+        UINavigationItem *item = self.navBar.items[0];
+        item.title = locationName;
+    }];
 }
 
 @end
