@@ -13,8 +13,7 @@
 - (void)layoutSubviews
 {
 
-    if (self.thumbnailImageView.image)
-    {
+    if (self.thumbnailImageView.image) {
         self.thumbnailImageView.layer.cornerRadius = 2.0f;
         self.thumbnailImageView.layer.masksToBounds = YES;
     }
@@ -35,12 +34,10 @@
 // (not necessarily loaded yet)
 //
 
-    if (content.hasThumbnail)
-    {
+    if (content.hasThumbnail) {
         frameRect.size.width = MESSAGE_VIEW_MIN_WIDTH;
     }
-    else
-    {
+    else {
         frameRect.size.width = MESSAGE_VIEW_MAX_WIDTH;
     }
 

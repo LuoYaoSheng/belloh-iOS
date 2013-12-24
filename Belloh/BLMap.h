@@ -14,7 +14,6 @@
 @property (nonatomic, assign) MKCoordinateRegion region;
 
 + (id)mapWithRegion:(MKCoordinateRegion)region;
-
 - (id)initWithRegion:(MKCoordinateRegion)region;
 
 @end

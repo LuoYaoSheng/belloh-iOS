@@ -114,8 +114,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showMap"])
-    {
+    if ([[segue identifier] isEqualToString:@"showMap"]) {
         [[segue destinationViewController] setRegion:self.map.region];
         [[segue destinationViewController] setDelegate:self];
     }
@@ -146,8 +145,7 @@
         NSURL *postsURL = [NSURL URLWithString:queryURLString];
         NSData *postsData = [NSData dataWithContentsOfURL:postsURL];
         
-        if (postsData == nil)
-        {
+        if (postsData == nil) {
             return NSLog(@"Data for %@ is nil. Check internet connection.",queryURLString);
         }
         
@@ -156,13 +154,11 @@
             NSError *error = nil;
             NSArray *postsArray = [NSJSONSerialization JSONObjectWithData:postsData options:0 error:&error];
             
-            if (error)
-            {
+            if (error) {
                 return NSLog(@"%@",error);
             }
             
-            for (NSDictionary *dict in postsArray)
-            {
+            for (NSDictionary *dict in postsArray) {
                 BLPost *post = [[BLPost alloc] init];
                 
                 post.message = [dict valueForKey:@"message"];
@@ -177,8 +173,7 @@
                 id hasThumb = [dict objectForKey:@"thumb"];
                 post.hasThumbnail = [hasThumb boolValue];
                 
-                if (post.hasThumbnail)
-                {
+                if (post.hasThumbnail) {
                     NSString *URLString = [NSString stringWithFormat:@"http://s3.amazonaws.com/belloh/thumbs/%@.jpg",postID];
                     NSURL *imageURL = [NSURL URLWithString:URLString];
                     
@@ -191,8 +186,7 @@
                         });
                     });
                 }
-                else
-                {
+                else {
                     post.thumbnail = nil;
                 }
                 
@@ -209,13 +203,20 @@
     CLLocation *location = [[CLLocation alloc] initWithLatitude:center.latitude longitude:center.longitude];
     
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error){
-        if (error)
-        {
-            return NSLog(@"Error geocoding: %@",error);
+        if (error) {
+            return NSLog(@"Error geocoding: %@", error);
         }
         
         CLPlacemark *placemark = placemarks[0];
-        NSString *locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.name, placemark.locality, placemark.country];
+        NSString *locationName;
+        
+        if (placemark.locality) {
+            locationName = [NSString stringWithFormat:@"%@, %@, %@", placemark.name, placemark.locality, placemark.country];
+        }
+        else {
+            locationName = [NSString stringWithFormat:@"%@, %@", placemark.name, placemark.country];
+        }
+
         UINavigationItem *item = self.navBar.items[0];
         item.title = locationName;
     }];

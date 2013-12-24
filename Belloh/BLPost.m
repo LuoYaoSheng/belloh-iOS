@@ -18,22 +18,17 @@
 
 + (NSString *)stringWithInterval:(unsigned int)intervalInSeconds
 {
-    if (intervalInSeconds >= 60)
-    {
+    if (intervalInSeconds >= 60) {
         unsigned int minutes = round(intervalInSeconds/60);
-        if (minutes >= 60)
-        {
+        if (minutes >= 60) {
             unsigned int hours = round(minutes/60);
-            if (hours >= 24)
-            {
+            if (hours >= 24) {
                 unsigned int days = round(hours/24);
-                if (days >= 365)
-                {
+                if (days >= 365) {
                     unsigned int years = round(days/365);
                     return [NSString stringWithFormat:@"%dy", years];
                 }
-                else if (days >= 7)
-                {
+                else if (days >= 7) {
                     unsigned int weeks = round(days/7);
                     return [NSString stringWithFormat:@"%dw", weeks];
                 }

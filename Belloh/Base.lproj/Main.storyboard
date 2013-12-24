@@ -18,7 +18,7 @@
                                 <color key="backgroundColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="barTintColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="News" id="ZZS-5G-Hcc">
@@ -126,7 +126,7 @@
                                         <color key="backgroundColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="barTintColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <textAttributes key="titleTextAttributes">
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                         </textAttributes>
                                         <items>
                                             <navigationItem title="Map" id="zER-eq-6o2">

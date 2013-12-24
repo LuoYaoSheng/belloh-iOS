@@ -17,8 +17,7 @@
 
 - (id)initWithRegion:(MKCoordinateRegion)region
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         self.region = region;
     }
     return self;
