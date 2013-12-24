@@ -1,0 +1,517 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2505826218692C7E00C28EC4 /* BLPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 2505826118692C7E00C28EC4 /* BLPost.m */; };
+		250CD3231868F01E00C66E99 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3201868F01E00C66E99 /* MapViewController.m */; };
+		250CD3241868F01E00C66E99 /* NewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3221868F01E00C66E99 /* NewsViewController.m */; };
+		250CD3271868F22B00C66E99 /* NewsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3261868F22B00C66E99 /* NewsTableViewCell.m */; };
+		250CD32A1868F3C900C66E99 /* BLMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3291868F3C900C66E99 /* BLMap.m */; };
+		25C33239186248B000DA8271 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C33238186248B000DA8271 /* Foundation.framework */; };
+		25C3323B186248B000DA8271 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C3323A186248B000DA8271 /* CoreGraphics.framework */; };
+		25C3323D186248B000DA8271 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C3323C186248B000DA8271 /* UIKit.framework */; };
+		25C33243186248B000DA8271 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 25C33241186248B000DA8271 /* InfoPlist.strings */; };
+		25C33245186248B000DA8271 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C33244186248B000DA8271 /* main.m */; };
+		25C33249186248B000DA8271 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C33248186248B000DA8271 /* AppDelegate.m */; };
+		25C3324C186248B000DA8271 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 25C3324A186248B000DA8271 /* Main.storyboard */; };
+		25C33254186248B000DA8271 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 25C33253186248B000DA8271 /* Images.xcassets */; };
+		25C3325B186248B000DA8271 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C3325A186248B000DA8271 /* XCTest.framework */; };
+		25C3325C186248B000DA8271 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C33238186248B000DA8271 /* Foundation.framework */; };
+		25C3325D186248B000DA8271 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C3323C186248B000DA8271 /* UIKit.framework */; };
+		25C33265186248B000DA8271 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 25C33263186248B000DA8271 /* InfoPlist.strings */; };
+		25C33267186248B000DA8271 /* BellohTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C33266186248B000DA8271 /* BellohTests.m */; };
+		25C332B5186394FE00DA8271 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C332B4186394FE00DA8271 /* MapKit.framework */; };
+		25C332B71863AB6500DA8271 /* orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C332B61863AB6500DA8271 /* orange.png */; };
+		25C332C918651AAD00DA8271 /* MultilineLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C332C818651AAD00DA8271 /* MultilineLabel.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		25C3325E186248B000DA8271 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25C3322D186248B000DA8271 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 25C33234186248B000DA8271;
+			remoteInfo = Belloh;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2505826018692C7E00C28EC4 /* BLPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPost.h; sourceTree = "<group>"; };
+		2505826118692C7E00C28EC4 /* BLPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPost.m; sourceTree = "<group>"; };
+		250CD31F1868F01E00C66E99 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		250CD3201868F01E00C66E99 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		250CD3211868F01E00C66E99 /* NewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsViewController.h; sourceTree = "<group>"; };
+		250CD3221868F01E00C66E99 /* NewsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsViewController.m; sourceTree = "<group>"; };
+		250CD3251868F22B00C66E99 /* NewsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsTableViewCell.h; sourceTree = "<group>"; };
+		250CD3261868F22B00C66E99 /* NewsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsTableViewCell.m; sourceTree = "<group>"; };
+		250CD3281868F3C900C66E99 /* BLMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLMap.h; sourceTree = "<group>"; };
+		250CD3291868F3C900C66E99 /* BLMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLMap.m; sourceTree = "<group>"; };
+		25C33235186248B000DA8271 /* Belloh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Belloh.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25C33238186248B000DA8271 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		25C3323A186248B000DA8271 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		25C3323C186248B000DA8271 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		25C33240186248B000DA8271 /* Belloh-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Belloh-Info.plist"; sourceTree = "<group>"; };
+		25C33242186248B000DA8271 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		25C33244186248B000DA8271 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		25C33246186248B000DA8271 /* Belloh-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Belloh-Prefix.pch"; sourceTree = "<group>"; };
+		25C33247186248B000DA8271 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		25C33248186248B000DA8271 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		25C3324B186248B000DA8271 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		25C33253186248B000DA8271 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		25C33259186248B000DA8271 /* BellohTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BellohTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		25C3325A186248B000DA8271 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		25C33262186248B000DA8271 /* BellohTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BellohTests-Info.plist"; sourceTree = "<group>"; };
+		25C33264186248B000DA8271 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		25C33266186248B000DA8271 /* BellohTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BellohTests.m; sourceTree = "<group>"; };
+		25C332B4186394FE00DA8271 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		25C332B61863AB6500DA8271 /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = orange.png; path = "../../belloh-node/public/images/orange.png"; sourceTree = "<group>"; };
+		25C332C718651AAD00DA8271 /* MultilineLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultilineLabel.h; sourceTree = "<group>"; };
+		25C332C818651AAD00DA8271 /* MultilineLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultilineLabel.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		25C33232186248B000DA8271 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25C332B5186394FE00DA8271 /* MapKit.framework in Frameworks */,
+				25C3323B186248B000DA8271 /* CoreGraphics.framework in Frameworks */,
+				25C3323D186248B000DA8271 /* UIKit.framework in Frameworks */,
+				25C33239186248B000DA8271 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		25C33256186248B000DA8271 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25C3325B186248B000DA8271 /* XCTest.framework in Frameworks */,
+				25C3325D186248B000DA8271 /* UIKit.framework in Frameworks */,
+				25C3325C186248B000DA8271 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25C3322C186248B000DA8271 = {
+			isa = PBXGroup;
+			children = (
+				25C3323E186248B000DA8271 /* Belloh */,
+				25C33260186248B000DA8271 /* BellohTests */,
+				25C33237186248B000DA8271 /* Frameworks */,
+				25C33236186248B000DA8271 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		25C33236186248B000DA8271 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				25C33235186248B000DA8271 /* Belloh.app */,
+				25C33259186248B000DA8271 /* BellohTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		25C33237186248B000DA8271 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				25C332B4186394FE00DA8271 /* MapKit.framework */,
+				25C33238186248B000DA8271 /* Foundation.framework */,
+				25C3323A186248B000DA8271 /* CoreGraphics.framework */,
+				25C3323C186248B000DA8271 /* UIKit.framework */,
+				25C3325A186248B000DA8271 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		25C3323E186248B000DA8271 /* Belloh */ = {
+			isa = PBXGroup;
+			children = (
+				2505826018692C7E00C28EC4 /* BLPost.h */,
+				2505826118692C7E00C28EC4 /* BLPost.m */,
+				250CD3251868F22B00C66E99 /* NewsTableViewCell.h */,
+				250CD3261868F22B00C66E99 /* NewsTableViewCell.m */,
+				250CD31F1868F01E00C66E99 /* MapViewController.h */,
+				250CD3201868F01E00C66E99 /* MapViewController.m */,
+				250CD3211868F01E00C66E99 /* NewsViewController.h */,
+				250CD3221868F01E00C66E99 /* NewsViewController.m */,
+				25C3324A186248B000DA8271 /* Main.storyboard */,
+				25C33253186248B000DA8271 /* Images.xcassets */,
+				25C3323F186248B000DA8271 /* Supporting Files */,
+				250CD3281868F3C900C66E99 /* BLMap.h */,
+				250CD3291868F3C900C66E99 /* BLMap.m */,
+			);
+			path = Belloh;
+			sourceTree = "<group>";
+		};
+		25C3323F186248B000DA8271 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				25C332C718651AAD00DA8271 /* MultilineLabel.h */,
+				25C332C818651AAD00DA8271 /* MultilineLabel.m */,
+				25C332B61863AB6500DA8271 /* orange.png */,
+				25C33247186248B000DA8271 /* AppDelegate.h */,
+				25C33248186248B000DA8271 /* AppDelegate.m */,
+				25C33240186248B000DA8271 /* Belloh-Info.plist */,
+				25C33241186248B000DA8271 /* InfoPlist.strings */,
+				25C33244186248B000DA8271 /* main.m */,
+				25C33246186248B000DA8271 /* Belloh-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		25C33260186248B000DA8271 /* BellohTests */ = {
+			isa = PBXGroup;
+			children = (
+				25C33266186248B000DA8271 /* BellohTests.m */,
+				25C33261186248B000DA8271 /* Supporting Files */,
+			);
+			path = BellohTests;
+			sourceTree = "<group>";
+		};
+		25C33261186248B000DA8271 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				25C33262186248B000DA8271 /* BellohTests-Info.plist */,
+				25C33263186248B000DA8271 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		25C33234186248B000DA8271 /* Belloh */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 25C3326A186248B000DA8271 /* Build configuration list for PBXNativeTarget "Belloh" */;
+			buildPhases = (
+				25C33231186248B000DA8271 /* Sources */,
+				25C33232186248B000DA8271 /* Frameworks */,
+				25C33233186248B000DA8271 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Belloh;
+			productName = Belloh;
+			productReference = 25C33235186248B000DA8271 /* Belloh.app */;
+			productType = "com.apple.product-type.application";
+		};
+		25C33258186248B000DA8271 /* BellohTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 25C3326D186248B000DA8271 /* Build configuration list for PBXNativeTarget "BellohTests" */;
+			buildPhases = (
+				25C33255186248B000DA8271 /* Sources */,
+				25C33256186248B000DA8271 /* Frameworks */,
+				25C33257186248B000DA8271 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				25C3325F186248B000DA8271 /* PBXTargetDependency */,
+			);
+			name = BellohTests;
+			productName = BellohTests;
+			productReference = 25C33259186248B000DA8271 /* BellohTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		25C3322D186248B000DA8271 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Eric Webster";
+				TargetAttributes = {
+					25C33258186248B000DA8271 = {
+						TestTargetID = 25C33234186248B000DA8271;
+					};
+				};
+			};
+			buildConfigurationList = 25C33230186248B000DA8271 /* Build configuration list for PBXProject "Belloh" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 25C3322C186248B000DA8271;
+			productRefGroup = 25C33236186248B000DA8271 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				25C33234186248B000DA8271 /* Belloh */,
+				25C33258186248B000DA8271 /* BellohTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		25C33233186248B000DA8271 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25C33254186248B000DA8271 /* Images.xcassets in Resources */,
+				25C332B71863AB6500DA8271 /* orange.png in Resources */,
+				25C33243186248B000DA8271 /* InfoPlist.strings in Resources */,
+				25C3324C186248B000DA8271 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		25C33257186248B000DA8271 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25C33265186248B000DA8271 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		25C33231186248B000DA8271 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25C33249186248B000DA8271 /* AppDelegate.m in Sources */,
+				25C332C918651AAD00DA8271 /* MultilineLabel.m in Sources */,
+				250CD3231868F01E00C66E99 /* MapViewController.m in Sources */,
+				25C33245186248B000DA8271 /* main.m in Sources */,
+				250CD3241868F01E00C66E99 /* NewsViewController.m in Sources */,
+				250CD32A1868F3C900C66E99 /* BLMap.m in Sources */,
+				250CD3271868F22B00C66E99 /* NewsTableViewCell.m in Sources */,
+				2505826218692C7E00C28EC4 /* BLPost.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		25C33255186248B000DA8271 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				25C33267186248B000DA8271 /* BellohTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		25C3325F186248B000DA8271 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 25C33234186248B000DA8271 /* Belloh */;
+			targetProxy = 25C3325E186248B000DA8271 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		25C33241186248B000DA8271 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				25C33242186248B000DA8271 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		25C3324A186248B000DA8271 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				25C3324B186248B000DA8271 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		25C33263186248B000DA8271 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				25C33264186248B000DA8271 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		25C33268186248B000DA8271 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		25C33269186248B000DA8271 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		25C3326B186248B000DA8271 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Belloh/Belloh-Prefix.pch";
+				INFOPLIST_FILE = "Belloh/Belloh-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		25C3326C186248B000DA8271 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Belloh/Belloh-Prefix.pch";
+				INFOPLIST_FILE = "Belloh/Belloh-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		25C3326E186248B000DA8271 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Belloh.app/Belloh";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Belloh/Belloh-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "BellohTests/BellohTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		25C3326F186248B000DA8271 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Belloh.app/Belloh";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Belloh/Belloh-Prefix.pch";
+				INFOPLIST_FILE = "BellohTests/BellohTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		25C33230186248B000DA8271 /* Build configuration list for PBXProject "Belloh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25C33268186248B000DA8271 /* Debug */,
+				25C33269186248B000DA8271 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		25C3326A186248B000DA8271 /* Build configuration list for PBXNativeTarget "Belloh" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25C3326B186248B000DA8271 /* Debug */,
+				25C3326C186248B000DA8271 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		25C3326D186248B000DA8271 /* Build configuration list for PBXNativeTarget "BellohTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				25C3326E186248B000DA8271 /* Debug */,
+				25C3326F186248B000DA8271 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 25C3322D186248B000DA8271 /* Project object */;
+}
