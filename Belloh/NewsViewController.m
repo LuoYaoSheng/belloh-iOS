@@ -12,7 +12,6 @@
 
 @interface NewsViewController ()
 
-@property (nonatomic, strong) NSMutableArray *posts;
 @property (nonatomic, strong) BLMap *map;
 @property (nonatomic, strong) CLGeocoder *geocoder;
 
@@ -34,7 +33,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    self.posts = [NSMutableArray array];
+    self->_posts = [NSMutableArray array];
     self.geocoder = [[CLGeocoder alloc] init];
 
     [NewsViewController removeShadowImageFromNavBar:self.navBar];
@@ -53,6 +52,23 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma Belloh Posts
+
+- (void)addPost:(BLPost *)post
+{
+    [self->_posts addObject:post];
+}
+
+- (void)removeAllPosts
+{
+    [self->_posts removeAllObjects];
+}
+
+- (NSArray *)posts
+{
+    return self->_posts;
+}
+
 #pragma mark - Table View Data Source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -69,6 +85,11 @@
 {
     static NSString *CellIdentifier = @"Cell";
     NewsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    if (indexPath.row >= [self.posts count]-1) {
+        NSLog(@"Load MORE");
+        [self BL_loadOlderPosts];
+    }
     
     BLPost *post = self.posts[indexPath.row];
     
@@ -106,7 +127,7 @@
 {
     MKCoordinateRegion region = [controller.mapView region];
     self.map.region = region;
-    [self.posts removeAllObjects];
+    [self removeAllPosts];
     [self BL_loadPostsForRegion:region];
     [self BL_setNavBarTitleToLocationName];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -120,9 +141,9 @@
     }
 }
 
-#pragma mark - Helper Methods
+#pragma mark - Belloh Posts Querying
 
-+ (NSString *)BL_boxQueryForRegion:(MKCoordinateRegion)region
++ (NSString *)BL_queryForRegion:(MKCoordinateRegion)region
 {
     CGFloat lat = region.center.latitude;
     CGFloat lon = region.center.longitude;
@@ -131,9 +152,20 @@
     return [NSString stringWithFormat:@"box%%5B0%%5D%%5B%%5D=%f&box%%5B0%%5D%%5B%%5D=%f&box%%5B1%%5D%%5B%%5D=%f&box%%5B1%%5D%%5B%%5D=%f",lat-deltaLat,lon-deltaLon,lat+deltaLat,lon+deltaLon];
 }
 
++ (NSString *)BL_queryForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId
+{
+    NSString *regionQuery = [NewsViewController BL_queryForRegion:region];
+    return [NSString stringWithFormat:@"%@&elder_id=%@", regionQuery, postId];
+}
+
 - (void)BL_loadPostsForRegion:(MKCoordinateRegion)region
 {
-    [self BL_loadPosts:[NewsViewController BL_boxQueryForRegion:region]];
+    [self BL_loadPosts:[NewsViewController BL_queryForRegion:region]];
+}
+
+- (void)BL_loadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId
+{
+    [self BL_loadPosts:[NewsViewController BL_queryForRegion:region lastPostId:postId]];
 }
 
 - (void)BL_loadPosts:(NSString *)query
@@ -157,6 +189,9 @@
             if (error) {
                 return NSLog(@"%@",error);
             }
+            else if ([postsArray count] == 0) {
+                return;
+            }
             
             for (NSDictionary *dict in postsArray) {
                 BLPost *post = [[BLPost alloc] init];
@@ -165,16 +200,13 @@
                 post.signature = [dict valueForKey:@"signature"];
                 post.latitude = [[dict objectForKey:@"lat"] floatValue];
                 post.longitude = [[dict objectForKey:@"lon"] floatValue];
-                                
-                NSString *postID = [dict valueForKey:@"_id"];
-                
-                [post setTimestampWithBSONId:postID];
-
-                id hasThumb = [dict objectForKey:@"thumb"];
-                post.hasThumbnail = [hasThumb boolValue];
+                post.id = [dict valueForKey:@"_id"];
+                [post setTimestampWithBSONId:post.id];
+                post.hasThumbnail = [[dict objectForKey:@"thumb"] boolValue];
                 
                 if (post.hasThumbnail) {
-                    NSString *URLString = [NSString stringWithFormat:@"http://s3.amazonaws.com/belloh/thumbs/%@.jpg",postID];
+                    static NSString *thumbnailURLFormat = @"http://s3.amazonaws.com/belloh/thumbs/%@.jpg";
+                    NSString *URLString = [NSString stringWithFormat:thumbnailURLFormat, post.id];
                     NSURL *imageURL = [NSURL URLWithString:URLString];
                     
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -190,19 +222,28 @@
                     post.thumbnail = nil;
                 }
                 
-                [self.posts addObject:post];
+                [self addPost:post];
             }
             [self.tableView reloadData];
         });
     });
 }
 
+- (void)BL_loadOlderPosts
+{
+    BLPost *lastPost = [self.posts lastObject];
+    NSString *lastPostId = lastPost.id;
+    [self BL_loadPostsForRegion:self.map.region lastPostId:lastPostId];
+}
+
+#pragma mark - Geocoding
+
 - (void)BL_setNavBarTitleToLocationName
 {
     CLLocationCoordinate2D center = self.map.region.center;
     CLLocation *location = [[CLLocation alloc] initWithLatitude:center.latitude longitude:center.longitude];
     
-    [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error){
+    [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         if (error) {
             return NSLog(@"Error geocoding: %@", error);
         }

@@ -7,9 +7,17 @@
 //
 
 #import "MapViewController.h"
+#import "BLPost.h"
 
-@interface NewsViewController : UIViewController <MapViewControllerDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface NewsViewController : UIViewController <MapViewControllerDelegate,UITableViewDataSource,UITableViewDelegate> {
+
+    NSMutableArray *_posts;
+
+}
 
 + (void)removeShadowImageFromNavBar:(UINavigationBar *)navBar;
+- (void)addPost:(BLPost *)post;
+- (void)removeAllPosts;
+- (NSArray *)posts;
 
 @end

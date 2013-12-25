@@ -10,15 +10,14 @@
 
 @interface BLPost : NSObject
 
-@property (nonatomic, strong) NSString *message;
-@property (nonatomic, strong) NSString *signature;
+@property (nonatomic, copy) NSString *message;
+@property (nonatomic, copy) NSString *signature;
 @property (nonatomic, strong) UIImage *thumbnail;
 @property (nonatomic, assign) BOOL hasThumbnail;
-@property (nonatomic, strong) NSString *timestamp;
+@property (nonatomic, copy) NSString *timestamp;
 @property (nonatomic, assign) CGFloat latitude;
 @property (nonatomic, assign) CGFloat longitude;
-
-//@property (nonatomic, strong) NSString *id;
+@property (nonatomic, copy) NSString *id;
 
 - (void)setTimestampWithBSONId:(NSString *)BSONId;
 
