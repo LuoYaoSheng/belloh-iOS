@@ -8,9 +8,10 @@
 
 #import "MapViewController.h"
 #import "CreateViewController.h"
+#import "NavigationSearchBar.h"
 #import "BLPost.h"
 
-@interface NewsViewController : UIViewController <MapViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,CreateViewControllerDelegate> {
+@interface NewsViewController : UIViewController <MapViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,CreateViewControllerDelegate,NavigationSearchBarDelegate> {
 
     NSMutableArray *_posts;
 
@@ -20,5 +21,12 @@
 - (void)insertPost:(BLPost *)post atIndex:(NSUInteger)index;
 - (void)removeAllPosts;
 - (NSArray *)posts;
+- (void)BLSendNewPost:(BLPost *)newPost;
+- (void)BLInsertPostWithDictionary:(NSDictionary *)postDictionary atIndex:(NSInteger)index;
+- (void)BLLoadOlderPosts;
+- (void)BLLoadPostsForRegion:(MKCoordinateRegion)region;
+- (void)BLLoadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId;
+- (void)BLLoadPostsForRegion:(MKCoordinateRegion)region filter:(NSString *)filter;
+- (void)BLLoadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId filter:(NSString *)filter;
 
 @end

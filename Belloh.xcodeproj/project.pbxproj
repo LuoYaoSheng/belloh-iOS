@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2505826218692C7E00C28EC4 /* BLPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 2505826118692C7E00C28EC4 /* BLPost.m */; };
 		25058265186BA89F00C28EC4 /* CreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25058264186BA89F00C28EC4 /* CreateViewController.m */; };
+		25058268186CBC0100C28EC4 /* NavigationSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 25058267186CBC0100C28EC4 /* NavigationSearchBar.m */; };
 		250CD3231868F01E00C66E99 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3201868F01E00C66E99 /* MapViewController.m */; };
 		250CD3241868F01E00C66E99 /* NewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3221868F01E00C66E99 /* NewsViewController.m */; };
 		250CD3271868F22B00C66E99 /* NewsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3261868F22B00C66E99 /* NewsTableViewCell.m */; };
@@ -46,6 +47,8 @@
 		2505826118692C7E00C28EC4 /* BLPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPost.m; sourceTree = "<group>"; };
 		25058263186BA89F00C28EC4 /* CreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateViewController.h; sourceTree = "<group>"; };
 		25058264186BA89F00C28EC4 /* CreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateViewController.m; sourceTree = "<group>"; };
+		25058266186CBC0100C28EC4 /* NavigationSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationSearchBar.h; sourceTree = "<group>"; };
+		25058267186CBC0100C28EC4 /* NavigationSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationSearchBar.m; sourceTree = "<group>"; };
 		250CD31F1868F01E00C66E99 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		250CD3201868F01E00C66E99 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		250CD3211868F01E00C66E99 /* NewsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsViewController.h; sourceTree = "<group>"; };
@@ -151,6 +154,8 @@
 				250CD3291868F3C900C66E99 /* BLMap.m */,
 				25058263186BA89F00C28EC4 /* CreateViewController.h */,
 				25058264186BA89F00C28EC4 /* CreateViewController.m */,
+				25058266186CBC0100C28EC4 /* NavigationSearchBar.h */,
+				25058267186CBC0100C28EC4 /* NavigationSearchBar.m */,
 			);
 			path = Belloh;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25C33249186248B000DA8271 /* AppDelegate.m in Sources */,
+				25058268186CBC0100C28EC4 /* NavigationSearchBar.m in Sources */,
 				25C332C918651AAD00DA8271 /* MultilineLabel.m in Sources */,
 				25058265186BA89F00C28EC4 /* CreateViewController.m in Sources */,
 				250CD3231868F01E00C66E99 /* MapViewController.m in Sources */,

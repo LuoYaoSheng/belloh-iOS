@@ -14,8 +14,9 @@
 
 @property (nonatomic, strong) BLMap *map;
 @property (nonatomic, strong) CLGeocoder *geocoder;
+@property (nonatomic, copy) NSString *postsFilter;
 
-@property (nonatomic, weak) IBOutlet UINavigationBar *navBar;
+@property (nonatomic, weak) IBOutlet NavigationSearchBar *navBar;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 
 @end
@@ -34,7 +35,7 @@
     MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
     
     self.map = [BLMap mapWithRegion:MKCoordinateRegionMake(locationCoordinate, span)];
-    [self BL_loadPostsForRegion:self.map.region];
+    [self BLLoadPostsForRegion:self.map.region];
     [self BL_setNavBarTitleToLocationName];
 }
 
@@ -85,7 +86,7 @@
     
     if (indexPath.row >= [self.posts count]-1) {
         NSLog(@"Load MORE");
-        [self BL_loadOlderPosts];
+        [self BLLoadOlderPosts];
     }
     
     BLPost *post = self.posts[indexPath.row];
@@ -125,8 +126,7 @@
 {
     MKCoordinateRegion region = [controller.mapView region];
     self.map.region = region;
-    [self removeAllPosts];
-    [self BL_loadPostsForRegion:region];
+    [self BLLoadPostsForRegion:region];
     [self BL_setNavBarTitleToLocationName];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -151,7 +151,7 @@
 - (void)createViewControllerDidPost:(BLPost *)post
 {
     NSLog(@"Send Post");
-    [self BL_sendNewPost:post];
+    [self BLSendNewPost:post];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -178,14 +178,38 @@
     return [NSString stringWithFormat:@"%@&elder_id=%@", regionQuery, postId];
 }
 
-- (void)BL_loadPostsForRegion:(MKCoordinateRegion)region
++ (NSString *)BL_queryForRegion:(MKCoordinateRegion)region filter:(NSString *)filter
 {
+    NSString *regionQuery = [NewsViewController BL_queryForRegion:region];
+    return [NSString stringWithFormat:@"%@&filter=%@", regionQuery, filter];
+}
+
++ (NSString *)BL_queryForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId filter:(NSString *)filter
+{
+    NSString *regionAndLastPostIdQuery = [NewsViewController BL_queryForRegion:region lastPostId:postId];
+    return [NSString stringWithFormat:@"%@&filter=%@", regionAndLastPostIdQuery, filter];
+}
+
+- (void)BLLoadPostsForRegion:(MKCoordinateRegion)region
+{
+    [self removeAllPosts];
     [self BL_loadPosts:[NewsViewController BL_queryForRegion:region]];
 }
 
-- (void)BL_loadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId
+- (void)BLLoadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId
 {
     [self BL_loadPosts:[NewsViewController BL_queryForRegion:region lastPostId:postId]];
+}
+
+- (void)BLLoadPostsForRegion:(MKCoordinateRegion)region filter:(NSString *)filter
+{
+    [self removeAllPosts];
+    [self BL_loadPosts:[NewsViewController BL_queryForRegion:region filter:filter]];
+}
+
+- (void)BLLoadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId filter:(NSString *)filter
+{
+    [self BL_loadPosts:[NewsViewController BL_queryForRegion:region lastPostId:postId filter:filter]];
 }
 
 - (void)BL_loadPosts:(NSString *)query
@@ -214,14 +238,26 @@
             }
             
             for (NSDictionary *dict in postsArray) {
-                [self BL_insertPostWithDictionary:dict atIndex:-1];
+                [self BLInsertPostWithDictionary:dict atIndex:-1];
             }
             [self.tableView reloadData];
         });
     });
 }
 
-- (void)BL_insertPostWithDictionary:(NSDictionary *)postDictionary atIndex:(NSInteger)index
+- (void)BLLoadOlderPosts
+{
+    BLPost *lastPost = [self.posts lastObject];
+    NSString *lastPostId = lastPost.id;
+    if (self.postsFilter) {
+        [self BLLoadPostsForRegion:self.map.region lastPostId:lastPostId filter:self.postsFilter];
+    }
+    else {
+        [self BLLoadPostsForRegion:self.map.region lastPostId:lastPostId];
+    }
+}
+
+- (void)BLInsertPostWithDictionary:(NSDictionary *)postDictionary atIndex:(NSInteger)index
 {
     BLPost *post = [[BLPost alloc] init];
     
@@ -259,16 +295,9 @@
     }
 }
 
-- (void)BL_loadOlderPosts
-{
-    BLPost *lastPost = [self.posts lastObject];
-    NSString *lastPostId = lastPost.id;
-    [self BL_loadPostsForRegion:self.map.region lastPostId:lastPostId];
-}
-
 #pragma mark - Belloh New Post
 
-- (void)BL_sendNewPost:(BLPost *)newPost
+- (void)BLSendNewPost:(BLPost *)newPost
 {
     NSURL *newPostURL = [NSURL URLWithString:@"http://www.belloh.com/"];
     NSMutableURLRequest *newPostRequest = [NSMutableURLRequest requestWithURL:newPostURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -305,7 +334,7 @@
             return NSLog(@"BL_sendNewPost parse error: %@",parseError);
         }
         
-        [self BL_insertPostWithDictionary:dict atIndex:0];
+        [self BLInsertPostWithDictionary:dict atIndex:0];
         [self.tableView reloadData];
     }];
 }
@@ -337,4 +366,68 @@
     }];
 }
 
+#pragma mark - Navigation Search Bar
+
+- (void)searchInitiated:(NSString *)searchQuery
+{
+    self.postsFilter = searchQuery;
+    [self BLLoadPostsForRegion:self.map.region filter:self.postsFilter];
+}
+
+- (void)searchCancelled
+{
+    if (self.postsFilter) {
+        self.postsFilter = nil;
+        [self BLLoadPostsForRegion:self.map.region];
+    }
+}
+
+/*
+- (void)BL_navigationBarSetSearchBar:(UINavigationBar *)navBar
+{
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-5.0, 0.0, 320.0, 44.0)];
+    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    searchBar.placeholder = @"Filter posts";
+    searchBar.delegate = self;
+
+//    UIView *searchBarView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 310.0, 44.0)];
+//    searchBarView.autoresizingMask = 0;
+//    [searchBarView addSubview:searchBar];
+
+    UINavigationItem *item = navBar.items[0];
+    item.titleView = searchBar;
+
+    [item.titleView becomeFirstResponder];
+    
+    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelSearch)];
+
+    self.searchButton = item.leftBarButtonItem;
+    [item setLeftBarButtonItem:cancelBarButton animated:YES];
+    //[searchBar setShowsCancelButton:YES animated:YES];
+}
+
+- (IBAction)displaySearchBar:(id)sender
+{
+    [self BL_navigationBarSetSearchBar:self.navBar];
+}
+
+- (void)cancelSearch
+{
+    if (self.postsFilter) {
+        self.postsFilter = nil;
+        [self BL_loadPostsForRegion:self.map.region];
+    }
+    UINavigationItem *item = self.navBar.items[0];
+    item.titleView = nil;
+    [item setLeftBarButtonItem:self.searchButton animated:YES];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    NSLog(@"Filter: %@",searchBar.text);
+    self.postsFilter = searchBar.text;
+    [self BL_loadPostsForRegion:self.map.region filter:self.postsFilter];
+    [searchBar resignFirstResponder];
+}
+*/
 @end
