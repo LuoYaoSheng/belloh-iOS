@@ -29,7 +29,7 @@
 	// Do any additional setup after loading the view.
 
     CGRect frame = self.messageView.frame;
-    frame.size.height = 140.0f;
+    frame.size.height = 100.0f;
     self.messageView.frame = frame;
     
     [self.messageView setScrollEnabled:NO];
@@ -56,7 +56,18 @@
 
 - (IBAction)post:(id)sender
 {
+    BLPost *post = [[BLPost alloc] init];
+    post.message = self.messageView.text;
+    post.signature = self.signatureField.text;
+    post.latitude = self.BLLocation.latitude;
+    post.longitude = self.BLLocation.longitude;
     
+    [self.delegate createViewControllerDidPost:post];
+}
+
+- (IBAction)cancel:(id)sender
+{
+    [self.delegate createViewControllerDidCancel];
 }
 
 @end

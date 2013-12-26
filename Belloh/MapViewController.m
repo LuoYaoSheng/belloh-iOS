@@ -19,9 +19,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    [NewsViewController removeShadowImageFromNavBar:self.navBar];
     
-    [self.mapView setRegion:self.region animated:NO];
+    [self.mapView setRegion:self.BLRegion animated:NO];
 }
 
 - (void)didReceiveMemoryWarning

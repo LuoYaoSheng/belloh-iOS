@@ -22,12 +22,6 @@
 
 @implementation NewsViewController
 
-+ (void)removeShadowImageFromNavBar:(UINavigationBar *)navBar
-{
-    [navBar setBackgroundImage:[UIImage new] forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];    
-    [navBar setShadowImage:[UIImage new]];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -35,8 +29,6 @@
     
     self->_posts = [NSMutableArray array];
     self.geocoder = [[CLGeocoder alloc] init];
-
-    [NewsViewController removeShadowImageFromNavBar:self.navBar];
     
     CLLocationCoordinate2D locationCoordinate = CLLocationCoordinate2DMake(30.155960086365063,0);
     MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
@@ -54,9 +46,14 @@
 
 #pragma Belloh Posts
 
-- (void)addPost:(BLPost *)post
+- (void)appendPost:(BLPost *)post
 {
     [self->_posts addObject:post];
+}
+
+- (void)insertPost:(BLPost *)post atIndex:(NSUInteger)index
+{
+    [self->_posts insertObject:post atIndex:index];
 }
 
 - (void)removeAllPosts
@@ -134,16 +131,34 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Segues
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *identifier = [segue identifier];
     if ([identifier isEqualToString:@"showMap"]) {
-        [[segue destinationViewController] setRegion:self.map.region];
+        [[segue destinationViewController] setBLRegion:self.map.region];
         [[segue destinationViewController] setDelegate:self];
     }
     else if ([identifier isEqualToString:@"newPost"]) {
-
+        [[segue destinationViewController] setBLLocation:self.map.region.center];
+        [[segue destinationViewController] setDelegate:self];
     }
+}
+
+#pragma mark - Create View
+
+- (void)createViewControllerDidPost:(BLPost *)post
+{
+    NSLog(@"Send Post");
+    [self BL_sendNewPost:post];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)createViewControllerDidCancel
+{
+    NSLog(@"Cancelled");
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Belloh Posts Querying
@@ -199,39 +214,49 @@
             }
             
             for (NSDictionary *dict in postsArray) {
-                BLPost *post = [[BLPost alloc] init];
-                
-                post.message = [dict valueForKey:@"message"];
-                post.signature = [dict valueForKey:@"signature"];
-                post.latitude = [[dict objectForKey:@"lat"] floatValue];
-                post.longitude = [[dict objectForKey:@"lon"] floatValue];
-                post.id = [dict valueForKey:@"_id"];
-                [post setTimestampWithBSONId:post.id];
-                post.hasThumbnail = [[dict objectForKey:@"thumb"] boolValue];
-                
-                if (post.hasThumbnail) {
-                    static NSString *thumbnailURLFormat = @"http://s3.amazonaws.com/belloh/thumbs/%@.jpg";
-                    NSString *URLString = [NSString stringWithFormat:thumbnailURLFormat, post.id];
-                    NSURL *imageURL = [NSURL URLWithString:URLString];
-                    
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                        NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-                        
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            post.thumbnail = [UIImage imageWithData:imageData];
-                            [self.tableView reloadData];
-                        });
-                    });
-                }
-                else {
-                    post.thumbnail = nil;
-                }
-                
-                [self addPost:post];
+                [self BL_insertPostWithDictionary:dict atIndex:-1];
             }
             [self.tableView reloadData];
         });
     });
+}
+
+- (void)BL_insertPostWithDictionary:(NSDictionary *)postDictionary atIndex:(NSInteger)index
+{
+    BLPost *post = [[BLPost alloc] init];
+    
+    post.message = [postDictionary valueForKey:@"message"];
+    post.signature = [postDictionary valueForKey:@"signature"];
+    post.latitude = [[postDictionary objectForKey:@"lat"] floatValue];
+    post.longitude = [[postDictionary objectForKey:@"lng"] floatValue];
+    post.id = [postDictionary valueForKey:@"_id"];
+    [post setTimestampWithBSONId:post.id];
+    post.hasThumbnail = [[postDictionary objectForKey:@"thumb"] boolValue];
+    
+    if (post.hasThumbnail) {
+        static NSString *thumbnailURLFormat = @"http://s3.amazonaws.com/belloh/thumbs/%@.jpg";
+        NSString *URLString = [NSString stringWithFormat:thumbnailURLFormat, post.id];
+        NSURL *imageURL = [NSURL URLWithString:URLString];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                post.thumbnail = [UIImage imageWithData:imageData];
+                [self.tableView reloadData];
+            });
+        });
+    }
+    else {
+        post.thumbnail = nil;
+    }
+    
+    if (index < 0) {
+        [self appendPost:post];
+    }
+    else {
+        [self insertPost:post atIndex:index];
+    }
 }
 
 - (void)BL_loadOlderPosts
@@ -239,6 +264,50 @@
     BLPost *lastPost = [self.posts lastObject];
     NSString *lastPostId = lastPost.id;
     [self BL_loadPostsForRegion:self.map.region lastPostId:lastPostId];
+}
+
+#pragma mark - Belloh New Post
+
+- (void)BL_sendNewPost:(BLPost *)newPost
+{
+    NSURL *newPostURL = [NSURL URLWithString:@"http://www.belloh.com/"];
+    NSMutableURLRequest *newPostRequest = [NSMutableURLRequest requestWithURL:newPostURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
+    newPostRequest.HTTPMethod = @"POST";
+    [newPostRequest setValue:@"application/json" forHTTPHeaderField:@"content-type"];
+
+    NSDictionary *postDictionary = @{@"message": newPost.message, @"signature": newPost.signature, @"lat": @(newPost.latitude), @"lng": @(newPost.longitude)};
+    NSError *error = nil;
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
+
+    if (error) {
+        return NSLog(@"BL_sendNewPost data error: %@",error);
+    }
+    
+    newPostRequest.HTTPBody = postData;
+    [NSURLConnection sendAsynchronousRequest:newPostRequest queue:[NSOperationQueue mainQueue] completionHandler:
+    ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+    
+        if (connectionError) {
+            return NSLog(@"BL_sendNewPost connection error: %@",connectionError);
+        }
+        
+        NSError *parseError = nil;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
+        
+        NSString *serverErrors = [dict valueForKey:@"errors"];
+        if (serverErrors) {
+            return NSLog(@"BL_sendNewPost server error: %@",serverErrors);
+        }
+        
+        NSLog(@"%@",dict);
+
+        if (parseError) {
+            return NSLog(@"BL_sendNewPost parse error: %@",parseError);
+        }
+        
+        [self BL_insertPostWithDictionary:dict atIndex:0];
+        [self.tableView reloadData];
+    }];
 }
 
 #pragma mark - Geocoding
@@ -262,7 +331,7 @@
         else {
             locationName = [NSString stringWithFormat:@"%@, %@", placemark.name, placemark.country];
         }
-
+        
         UINavigationItem *item = self.navBar.items[0];
         item.title = locationName;
     }];

@@ -22,7 +22,7 @@
 @property (weak, nonatomic) id<MapViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (assign, nonatomic) MKCoordinateRegion region;
+@property (assign, nonatomic) MKCoordinateRegion BLRegion;
 
 - (IBAction)done:(id)sender;
 
