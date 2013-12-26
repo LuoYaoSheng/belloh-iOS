@@ -98,6 +98,7 @@
     return cell;
 }
 
+
 #pragma mark - Table View Delegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -135,9 +136,13 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showMap"]) {
+    NSString *identifier = [segue identifier];
+    if ([identifier isEqualToString:@"showMap"]) {
         [[segue destinationViewController] setRegion:self.map.region];
         [[segue destinationViewController] setDelegate:self];
+    }
+    else if ([identifier isEqualToString:@"newPost"]) {
+
     }
 }
 

@@ -10,13 +10,13 @@
 
 @interface NSString (extras)
 
-+ (NSString *)stringWithInterval:(unsigned int)intervalInSeconds;
++ (NSString *)stringWithIntervalInSeconds:(unsigned int)intervalInSeconds;
 
 @end
 
 @implementation NSString (extras)
 
-+ (NSString *)stringWithInterval:(unsigned int)intervalInSeconds
++ (NSString *)stringWithIntervalInSeconds:(unsigned int)intervalInSeconds
 {
     if (intervalInSeconds >= 60) {
         unsigned int minutes = round(intervalInSeconds/60);
@@ -55,7 +55,7 @@
     
     unsigned int currentDateInSeconds = [[NSDate date] timeIntervalSince1970];
     unsigned int intervalInSeconds = currentDateInSeconds-BSONDateInSeconds;
-    self.timestamp = [NSString stringWithInterval:intervalInSeconds];
+    self.timestamp = [NSString stringWithIntervalInSeconds:intervalInSeconds];
 }
 
 @end

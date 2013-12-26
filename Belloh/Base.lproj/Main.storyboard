@@ -4,6 +4,51 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
     <scenes>
+        <!--Create View Controller-->
+        <scene sceneID="ccn-n8-YGJ">
+            <objects>
+                <viewController id="LYJ-Q2-9yn" customClass="CreateViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Oq1-WW-gdN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" id="cNP-sa-1J0">
+                                <rect key="frame" x="20" y="20" width="280" height="140"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="0.97809649399999998" blue="0.94318181820000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your name or signature" minimumFontSize="17" id="b46-VZ-Pgk">
+                                <rect key="frame" x="20" y="168" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.97809649399999998" blue="0.94318181820000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BI5-KK-l16">
+                                <rect key="frame" x="254" y="206" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Post">
+                                    <color key="titleColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="messageView" destination="cNP-sa-1J0" id="1Kh-rZ-V9B"/>
+                        <outlet property="postButton" destination="BI5-KK-l16" id="eWD-5j-iu0"/>
+                        <outlet property="signatureField" destination="b46-VZ-Pgk" id="mub-Zq-iTX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="djL-Iv-Wwc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="790" y="-491"/>
+        </scene>
         <!--News View Controller-->
         <scene sceneID="ZOz-Gm-vFc">
             <objects>
@@ -18,13 +63,19 @@
                                 <color key="backgroundColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="barTintColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="Didot" family="Didot" pointSize="20"/>
+                                    <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="14"/>
                                     <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                 </textAttributes>
                                 <items>
                                     <navigationItem title="News" id="ZZS-5G-Hcc">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="search" id="EF5-i0-bMp">
+                                            <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="ptw-Pz-bTB">
                                             <color key="tintColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <segue destination="LYJ-Q2-9yn" kind="modal" identifier="newPost" id="ePA-lK-byl"/>
+                                            </connections>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
@@ -88,6 +139,7 @@
                     </view>
                     <connections>
                         <outlet property="navBar" destination="xu1-TA-GiG" id="rba-GR-m8e"/>
+                        <outlet property="searchDisplayController" destination="SZX-z1-SF1" id="oHE-CY-w4H"/>
                         <outlet property="tableView" destination="rNM-sX-fU7" id="AEQ-aE-RWD"/>
                     </connections>
                 </viewController>
@@ -102,6 +154,14 @@
                         <segue destination="kIf-nA-PKG" kind="modal" identifier="showMap" modalTransitionStyle="flipHorizontal" id="mrc-36-bWx"/>
                     </connections>
                 </swipeGestureRecognizer>
+                <searchDisplayController id="SZX-z1-SF1">
+                    <connections>
+                        <outlet property="delegate" destination="aqb-xJ-bab" id="NKQ-WG-xg0"/>
+                        <outlet property="searchContentsController" destination="aqb-xJ-bab" id="gze-T9-RYg"/>
+                        <outlet property="searchResultsDataSource" destination="aqb-xJ-bab" id="yLB-Nc-egL"/>
+                        <outlet property="searchResultsDelegate" destination="aqb-xJ-bab" id="F2W-pB-WLb"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="790" y="218"/>
         </scene>
@@ -127,7 +187,7 @@
                                         <color key="backgroundColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="barTintColor" red="0.26331313779999999" green="0.13222922500000001" blue="0.00054459859280000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <textAttributes key="titleTextAttributes">
-                                            <fontDescription key="fontDescription" name="Didot" family="Didot" pointSize="20"/>
+                                            <fontDescription key="fontDescription" name="Verdana" family="Verdana" pointSize="20"/>
                                             <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                         </textAttributes>
                                         <items>
