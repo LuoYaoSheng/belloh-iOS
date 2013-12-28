@@ -11,6 +11,9 @@
 @interface NavigationSearchBar ()
 
 @property (nonatomic, strong) UIBarButtonItem *searchButton;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) UIBarButtonItem *rightButton;
 
 @end
 
@@ -21,9 +24,17 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         // Initialization code
-        UINavigationItem *item = self.items[0];
+        UINavigationItem *item = self.topItem;
         self.searchButton = item.leftBarButtonItem;
         self.searchButton.action = @selector(_displaySearchBar);
+        
+        self.rightButton = item.rightBarButtonItem;
+        
+        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-5.0, 0.0, 320.0, 44.0)];
+        self.searchBar.placeholder = @"Filter posts";
+        self.searchBar.delegate = self;
+        
+        self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(_searchCancelled)];
     }
     return self;
 }
@@ -41,31 +52,19 @@
 
 - (void)_displaySearchBar
 {
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-5.0, 0.0, 320.0, 44.0)];
-    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.placeholder = @"Filter posts";
-    searchBar.delegate = self;
-    /*
-     UIView *searchBarView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 310.0, 44.0)];
-     searchBarView.autoresizingMask = 0;
-     [searchBarView addSubview:searchBar];
-     */
-    UINavigationItem *item = self.items[0];
-    item.titleView = searchBar;
-    
+    UINavigationItem *item = self.topItem;
+    item.rightBarButtonItem = nil;
+
+    item.titleView = self.searchBar;
     [item.titleView becomeFirstResponder];
-    
-    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(_cancelSearch)];
-    
-    self.searchButton = item.leftBarButtonItem;
-    [item setLeftBarButtonItem:cancelBarButton animated:YES];
-    //[searchBar setShowsCancelButton:YES animated:YES];
+    [item setLeftBarButtonItem:self.cancelButton animated:YES];
 }
 
-- (void)_cancelSearch
+- (void)_searchCancelled
 {
     [self.delegate searchCancelled];
-    UINavigationItem *item = self.items[0];
+    UINavigationItem *item = self.topItem;
+    item.rightBarButtonItem = self.rightButton;
     item.titleView = nil;
     [item setLeftBarButtonItem:self.searchButton animated:YES];
 }

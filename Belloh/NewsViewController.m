@@ -85,7 +85,6 @@
     NewsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     if (indexPath.row >= [self.posts count]-1) {
-        NSLog(@"Load MORE");
         [self BLLoadOlderPosts];
     }
     
@@ -95,7 +94,6 @@
 
     return cell;
 }
-
 
 #pragma mark - Table View Delegate
 
@@ -120,7 +118,7 @@
     return height;
 }
 
-#pragma mark - Map View
+#pragma mark - Map View Controller Delegate
 
 - (void)mapViewControllerDidFinish:(MapViewController *)controller
 {
@@ -136,32 +134,31 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *identifier = [segue identifier];
+    id dest = [segue destinationViewController];
     if ([identifier isEqualToString:@"showMap"]) {
-        [[segue destinationViewController] setBLRegion:self.map.region];
-        [[segue destinationViewController] setDelegate:self];
+        [dest setBLRegion:self.map.region];
+        [dest setDelegate:self];
     }
     else if ([identifier isEqualToString:@"newPost"]) {
-        [[segue destinationViewController] setBLLocation:self.map.region.center];
-        [[segue destinationViewController] setDelegate:self];
+        [dest setBLLocation:self.map.region.center];
+        [dest setDelegate:self];
     }
 }
 
-#pragma mark - Create View
+#pragma mark - Create View Controller Delegate
 
 - (void)createViewControllerDidPost:(BLPost *)post
 {
-    NSLog(@"Send Post");
     [self BLSendNewPost:post];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)createViewControllerDidCancel
 {
-    NSLog(@"Cancelled");
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Belloh Posts Querying
+#pragma mark - Belloh Posts Queries
 
 + (NSString *)BL_queryForRegion:(MKCoordinateRegion)region
 {
@@ -189,6 +186,8 @@
     NSString *regionAndLastPostIdQuery = [NewsViewController BL_queryForRegion:region lastPostId:postId];
     return [NSString stringWithFormat:@"%@&filter=%@", regionAndLastPostIdQuery, filter];
 }
+
+#pragma mark - Belloh Posts Loading
 
 - (void)BLLoadPostsForRegion:(MKCoordinateRegion)region
 {
@@ -222,7 +221,7 @@
         NSData *postsData = [NSData dataWithContentsOfURL:postsURL];
         
         if (postsData == nil) {
-            return NSLog(@"Data for %@ is nil. Check internet connection.",queryURLString);
+            return BLLog(@"data for %@ is nil. Check internet connection.", queryURLString);
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -231,10 +230,13 @@
             NSArray *postsArray = [NSJSONSerialization JSONObjectWithData:postsData options:0 error:&error];
             
             if (error) {
-                return NSLog(@"%@",error);
+                return BLLog(@"%@", error);
             }
             else if ([postsArray count] == 0) {
-                return;
+                self->_noRemainingPosts = YES;
+            }
+            else {
+                self->_noRemainingPosts = NO;
             }
             
             for (NSDictionary *dict in postsArray) {
@@ -247,7 +249,16 @@
 
 - (void)BLLoadOlderPosts
 {
+    if (self->_noRemainingPosts) {
+        return;
+    }
+
     BLPost *lastPost = [self.posts lastObject];
+    if (!lastPost) {
+        return BLLog(@"no posts loaded");
+    }
+    BLLog(@"Load MORE");
+
     NSString *lastPostId = lastPost.id;
     if (self.postsFilter) {
         [self BLLoadPostsForRegion:self.map.region lastPostId:lastPostId filter:self.postsFilter];
@@ -309,7 +320,7 @@
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
 
     if (error) {
-        return NSLog(@"BL_sendNewPost data error: %@",error);
+        return BLLog(@"data error: %@", error);
     }
     
     newPostRequest.HTTPBody = postData;
@@ -317,7 +328,7 @@
     ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
     
         if (connectionError) {
-            return NSLog(@"BL_sendNewPost connection error: %@",connectionError);
+            return BLLog(@"connection error: %@", connectionError);
         }
         
         NSError *parseError = nil;
@@ -325,13 +336,13 @@
         
         NSString *serverErrors = [dict valueForKey:@"errors"];
         if (serverErrors) {
-            return NSLog(@"BL_sendNewPost server error: %@",serverErrors);
+            return BLLog(@"server error: %@", serverErrors);
         }
         
         NSLog(@"%@",dict);
 
         if (parseError) {
-            return NSLog(@"BL_sendNewPost parse error: %@",parseError);
+            return BLLog(@"parse error: %@", parseError);
         }
         
         [self BLInsertPostWithDictionary:dict atIndex:0];
@@ -348,7 +359,7 @@
     
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         if (error) {
-            return NSLog(@"Error geocoding: %@", error);
+            return BLLog(@"geocoding: %@", error);
         }
         
         CLPlacemark *placemark = placemarks[0];
@@ -361,12 +372,12 @@
             locationName = [NSString stringWithFormat:@"%@, %@", placemark.name, placemark.country];
         }
         
-        UINavigationItem *item = self.navBar.items[0];
+        UINavigationItem *item = self.navBar.topItem;
         item.title = locationName;
     }];
 }
 
-#pragma mark - Navigation Search Bar
+#pragma mark - Navigation Search Bar Delegate
 
 - (void)searchInitiated:(NSString *)searchQuery
 {
@@ -382,52 +393,4 @@
     }
 }
 
-/*
-- (void)BL_navigationBarSetSearchBar:(UINavigationBar *)navBar
-{
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-5.0, 0.0, 320.0, 44.0)];
-    searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    searchBar.placeholder = @"Filter posts";
-    searchBar.delegate = self;
-
-//    UIView *searchBarView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 310.0, 44.0)];
-//    searchBarView.autoresizingMask = 0;
-//    [searchBarView addSubview:searchBar];
-
-    UINavigationItem *item = navBar.items[0];
-    item.titleView = searchBar;
-
-    [item.titleView becomeFirstResponder];
-    
-    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelSearch)];
-
-    self.searchButton = item.leftBarButtonItem;
-    [item setLeftBarButtonItem:cancelBarButton animated:YES];
-    //[searchBar setShowsCancelButton:YES animated:YES];
-}
-
-- (IBAction)displaySearchBar:(id)sender
-{
-    [self BL_navigationBarSetSearchBar:self.navBar];
-}
-
-- (void)cancelSearch
-{
-    if (self.postsFilter) {
-        self.postsFilter = nil;
-        [self BL_loadPostsForRegion:self.map.region];
-    }
-    UINavigationItem *item = self.navBar.items[0];
-    item.titleView = nil;
-    [item setLeftBarButtonItem:self.searchButton animated:YES];
-}
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    NSLog(@"Filter: %@",searchBar.text);
-    self.postsFilter = searchBar.text;
-    [self BL_loadPostsForRegion:self.map.region filter:self.postsFilter];
-    [searchBar resignFirstResponder];
-}
-*/
 @end

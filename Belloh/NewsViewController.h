@@ -11,9 +11,15 @@
 #import "NavigationSearchBar.h"
 #import "BLPost.h"
 
-@interface NewsViewController : UIViewController <MapViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,CreateViewControllerDelegate,NavigationSearchBarDelegate> {
+// NSLog extension which prints the name of the calling class and method
+#define BLLog(format,...) NSLog([NSString stringWithFormat:@"%%@->%%@ %@",format],self.class,NSStringFromSelector(_cmd),##__VA_ARGS__)
 
+
+@interface NewsViewController : UIViewController<MapViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,CreateViewControllerDelegate,NavigationSearchBarDelegate> {
+
+@private
     NSMutableArray *_posts;
+    BOOL _noRemainingPosts;
 
 }
 

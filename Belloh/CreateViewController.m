@@ -14,6 +14,7 @@
 
 @implementation CreateViewController
 
+/*
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -22,6 +23,7 @@
     }
     return self;
 }
+*/
 
 - (void)viewDidLoad
 {
@@ -42,8 +44,6 @@
     self.messageView.clipsToBounds = YES;
     
     self.postButton.layer.cornerRadius = 5;
-    self.postButton.layer.borderWidth = 1;
-    //self.postButton.layer.borderColor = [UIColor blueColor].CGColor;
     
     [self.messageView becomeFirstResponder];
 }
