@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface BLPost : NSObject
 
 @property (nonatomic, copy) NSString *message;

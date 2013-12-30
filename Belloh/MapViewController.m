@@ -7,7 +7,6 @@
 //
 
 #import "MapViewController.h"
-#import "NewsViewController.h"
 
 @interface MapViewController ()
 
@@ -20,7 +19,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    [self.mapView setRegion:self.BLRegion animated:NO];
+    [self.delegate mapViewControllerDidLoad:self];
 }
 
 - (void)didReceiveMemoryWarning

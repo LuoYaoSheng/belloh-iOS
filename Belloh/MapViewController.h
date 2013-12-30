@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
 @class MapViewController;
 
 @protocol MapViewControllerDelegate
 
+- (void)mapViewControllerDidLoad:(MapViewController *)controller;
 - (void)mapViewControllerDidFinish:(MapViewController *)controller;
 
 @end
@@ -20,9 +20,7 @@
 @interface MapViewController : UIViewController
 
 @property (weak, nonatomic) id<MapViewControllerDelegate> delegate;
-@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (assign, nonatomic) MKCoordinateRegion BLRegion;
 
 - (IBAction)done:(id)sender;
 

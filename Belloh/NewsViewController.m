@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
+
     self->_posts = [NSMutableArray array];
     self.geocoder = [[CLGeocoder alloc] init];
     
@@ -45,7 +45,12 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma Belloh Posts
+#pragma mark - Belloh Posts
+
+- (NSArray *)posts
+{
+    return self->_posts;
+}
 
 - (void)appendPost:(BLPost *)post
 {
@@ -60,11 +65,6 @@
 - (void)removeAllPosts
 {
     [self->_posts removeAllObjects];
-}
-
-- (NSArray *)posts
-{
-    return self->_posts;
 }
 
 #pragma mark - Table View Data Source
@@ -129,6 +129,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)mapViewControllerDidLoad:(MapViewController *)controller
+{
+    [controller.mapView setRegion:self.map.region animated:NO];
+}
+
 #pragma mark - Segues
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -136,11 +141,9 @@
     NSString *identifier = [segue identifier];
     id dest = [segue destinationViewController];
     if ([identifier isEqualToString:@"showMap"]) {
-        [dest setBLRegion:self.map.region];
         [dest setDelegate:self];
     }
     else if ([identifier isEqualToString:@"newPost"]) {
-        [dest setBLLocation:self.map.region.center];
         [dest setDelegate:self];
     }
 }
@@ -149,6 +152,9 @@
 
 - (void)createViewControllerDidPost:(BLPost *)post
 {
+    CLLocationCoordinate2D location = self.map.region.center;
+    post.latitude = location.latitude;
+    post.longitude = location.longitude;
     [self BLSendNewPost:post];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -221,7 +227,7 @@
         NSData *postsData = [NSData dataWithContentsOfURL:postsURL];
         
         if (postsData == nil) {
-            return BLLog(@"data for %@ is nil. Check internet connection.", queryURLString);
+            return BLLOG(@"data for %@ is nil. Check internet connection.", queryURLString);
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -230,7 +236,7 @@
             NSArray *postsArray = [NSJSONSerialization JSONObjectWithData:postsData options:0 error:&error];
             
             if (error) {
-                return BLLog(@"%@", error);
+                return BLLOG(@"%@", error);
             }
             else if ([postsArray count] == 0) {
                 self->_noRemainingPosts = YES;
@@ -255,9 +261,9 @@
 
     BLPost *lastPost = [self.posts lastObject];
     if (!lastPost) {
-        return BLLog(@"no posts loaded");
+        return BLLOG(@"no posts loaded");
     }
-    BLLog(@"Load MORE");
+    BLLOG(@"Load MORE");
 
     NSString *lastPostId = lastPost.id;
     if (self.postsFilter) {
@@ -320,7 +326,7 @@
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
 
     if (error) {
-        return BLLog(@"data error: %@", error);
+        return BLLOG(@"data error: %@", error);
     }
     
     newPostRequest.HTTPBody = postData;
@@ -328,7 +334,7 @@
     ^(NSURLResponse *response, NSData *data, NSError *connectionError) {
     
         if (connectionError) {
-            return BLLog(@"connection error: %@", connectionError);
+            return BLLOG(@"connection error: %@", connectionError);
         }
         
         NSError *parseError = nil;
@@ -336,13 +342,13 @@
         
         NSString *serverErrors = [dict valueForKey:@"errors"];
         if (serverErrors) {
-            return BLLog(@"server error: %@", serverErrors);
+            return BLLOG(@"server error: %@", serverErrors);
         }
         
-        NSLog(@"%@",dict);
+        BLLOG(@"%@",dict);
 
         if (parseError) {
-            return BLLog(@"parse error: %@", parseError);
+            return BLLOG(@"parse error: %@", parseError);
         }
         
         [self BLInsertPostWithDictionary:dict atIndex:0];
@@ -359,7 +365,7 @@
     
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         if (error) {
-            return BLLog(@"geocoding: %@", error);
+            return BLLOG(@"geocoding: %@", error);
         }
         
         CLPlacemark *placemark = placemarks[0];
@@ -382,7 +388,9 @@
 - (void)searchInitiated:(NSString *)searchQuery
 {
     self.postsFilter = searchQuery;
-    [self BLLoadPostsForRegion:self.map.region filter:self.postsFilter];
+    BLLOG(@"Filter: %@", searchQuery);
+
+    [self BLLoadPostsForRegion:self.map.region filter:searchQuery];
 }
 
 - (void)searchCancelled

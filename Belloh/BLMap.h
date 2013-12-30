@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
 @interface BLMap : NSObject

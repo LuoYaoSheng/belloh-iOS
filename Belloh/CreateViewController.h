@@ -6,11 +6,7 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
 #import "BLPost.h"
-
-@class CreateViewController;
 
 @protocol CreateViewControllerDelegate
 
@@ -25,7 +21,6 @@
 @property (nonatomic, weak) IBOutlet UITextView *messageView;
 @property (nonatomic, weak) IBOutlet UIButton *postButton;
 @property (nonatomic, weak) IBOutlet UITextField *signatureField;
-@property (nonatomic, assign) CLLocationCoordinate2D BLLocation;
 
 - (IBAction)post:(id)sender;
 - (IBAction)cancel:(id)sender;

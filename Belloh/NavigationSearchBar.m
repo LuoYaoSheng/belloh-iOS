@@ -39,15 +39,6 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
 #pragma mark - Search Bar
 
 - (void)_displaySearchBar
@@ -71,7 +62,6 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    NSLog(@"Filter: %@", searchBar.text);
     [searchBar resignFirstResponder];
     [self.delegate searchInitiated:searchBar.text];
 }

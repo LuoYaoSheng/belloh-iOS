@@ -12,10 +12,13 @@
 #import "BLPost.h"
 
 // NSLog extension which prints the name of the calling class and method
-#define BLLog(format,...) NSLog([NSString stringWithFormat:@"%%@->%%@ %@",format],self.class,NSStringFromSelector(_cmd),##__VA_ARGS__)
+#define BLLOG(format,...) NSLog([NSString stringWithFormat:@"%%@->%%@ %@",format],self.class,NSStringFromSelector(_cmd),##__VA_ARGS__)
 
+@protocol Belloh <CreateViewControllerDelegate,MapViewControllerDelegate,NavigationSearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
 
-@interface NewsViewController : UIViewController<MapViewControllerDelegate,UITableViewDataSource,UITableViewDelegate,CreateViewControllerDelegate,NavigationSearchBarDelegate> {
+@end
+
+@interface NewsViewController : UIViewController<Belloh> {
 
 @private
     NSMutableArray *_posts;
@@ -25,14 +28,14 @@
 
 - (void)appendPost:(BLPost *)post;
 - (void)insertPost:(BLPost *)post atIndex:(NSUInteger)index;
-- (void)removeAllPosts;
 - (NSArray *)posts;
-- (void)BLSendNewPost:(BLPost *)newPost;
+- (void)removeAllPosts;
 - (void)BLInsertPostWithDictionary:(NSDictionary *)postDictionary atIndex:(NSInteger)index;
 - (void)BLLoadOlderPosts;
 - (void)BLLoadPostsForRegion:(MKCoordinateRegion)region;
 - (void)BLLoadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId;
 - (void)BLLoadPostsForRegion:(MKCoordinateRegion)region filter:(NSString *)filter;
 - (void)BLLoadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId filter:(NSString *)filter;
+- (void)BLSendNewPost:(BLPost *)newPost;
 
 @end

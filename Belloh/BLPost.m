@@ -8,13 +8,13 @@
 
 #import "BLPost.h"
 
-@interface NSString (extras)
+@interface NSString (Extras)
 
 + (NSString *)stringWithIntervalInSeconds:(unsigned int)intervalInSeconds;
 
 @end
 
-@implementation NSString (extras)
+@implementation NSString (Extras)
 
 + (NSString *)stringWithIntervalInSeconds:(unsigned int)intervalInSeconds
 {

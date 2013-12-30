@@ -10,6 +10,7 @@
 		2505826218692C7E00C28EC4 /* BLPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 2505826118692C7E00C28EC4 /* BLPost.m */; };
 		25058265186BA89F00C28EC4 /* CreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25058264186BA89F00C28EC4 /* CreateViewController.m */; };
 		25058268186CBC0100C28EC4 /* NavigationSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 25058267186CBC0100C28EC4 /* NavigationSearchBar.m */; };
+		25058373187087ED00C28EC4 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C332B4186394FE00DA8271 /* MapKit.framework */; };
 		250CD3231868F01E00C66E99 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3201868F01E00C66E99 /* MapViewController.m */; };
 		250CD3241868F01E00C66E99 /* NewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3221868F01E00C66E99 /* NewsViewController.m */; };
 		250CD3271868F22B00C66E99 /* NewsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 250CD3261868F22B00C66E99 /* NewsTableViewCell.m */; };
@@ -27,9 +28,7 @@
 		25C3325D186248B000DA8271 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C3323C186248B000DA8271 /* UIKit.framework */; };
 		25C33265186248B000DA8271 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 25C33263186248B000DA8271 /* InfoPlist.strings */; };
 		25C33267186248B000DA8271 /* BellohTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C33266186248B000DA8271 /* BellohTests.m */; };
-		25C332B5186394FE00DA8271 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C332B4186394FE00DA8271 /* MapKit.framework */; };
 		25C332B71863AB6500DA8271 /* orange.png in Resources */ = {isa = PBXBuildFile; fileRef = 25C332B61863AB6500DA8271 /* orange.png */; };
-		25C332C918651AAD00DA8271 /* MultilineLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C332C818651AAD00DA8271 /* MultilineLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,8 +75,6 @@
 		25C33266186248B000DA8271 /* BellohTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BellohTests.m; sourceTree = "<group>"; };
 		25C332B4186394FE00DA8271 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		25C332B61863AB6500DA8271 /* orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = orange.png; path = "../../belloh-node/public/images/orange.png"; sourceTree = "<group>"; };
-		25C332C718651AAD00DA8271 /* MultilineLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultilineLabel.h; sourceTree = "<group>"; };
-		25C332C818651AAD00DA8271 /* MultilineLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultilineLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,7 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				25C332B5186394FE00DA8271 /* MapKit.framework in Frameworks */,
+				25058373187087ED00C28EC4 /* MapKit.framework in Frameworks */,
 				25C3323B186248B000DA8271 /* CoreGraphics.framework in Frameworks */,
 				25C3323D186248B000DA8271 /* UIKit.framework in Frameworks */,
 				25C33239186248B000DA8271 /* Foundation.framework in Frameworks */,
@@ -163,8 +160,6 @@
 		25C3323F186248B000DA8271 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				25C332C718651AAD00DA8271 /* MultilineLabel.h */,
-				25C332C818651AAD00DA8271 /* MultilineLabel.m */,
 				25C332B61863AB6500DA8271 /* orange.png */,
 				25C33247186248B000DA8271 /* AppDelegate.h */,
 				25C33248186248B000DA8271 /* AppDelegate.m */,
@@ -294,7 +289,6 @@
 			files = (
 				25C33249186248B000DA8271 /* AppDelegate.m in Sources */,
 				25058268186CBC0100C28EC4 /* NavigationSearchBar.m in Sources */,
-				25C332C918651AAD00DA8271 /* MultilineLabel.m in Sources */,
 				25058265186BA89F00C28EC4 /* CreateViewController.m in Sources */,
 				250CD3231868F01E00C66E99 /* MapViewController.m in Sources */,
 				25C33245186248B000DA8271 /* main.m in Sources */,
@@ -431,8 +425,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Belloh/Belloh-Prefix.pch";
 				INFOPLIST_FILE = "Belloh/Belloh-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -445,8 +440,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Belloh/Belloh-Prefix.pch";
 				INFOPLIST_FILE = "Belloh/Belloh-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
