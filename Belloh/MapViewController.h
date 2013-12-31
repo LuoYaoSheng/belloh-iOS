@@ -10,7 +10,7 @@
 
 @class MapViewController;
 
-@protocol MapViewControllerDelegate
+@protocol MapViewControllerDelegate <NSObject>
 
 - (void)mapViewControllerDidLoad:(MapViewController *)controller;
 - (void)mapViewControllerDidFinish:(MapViewController *)controller;

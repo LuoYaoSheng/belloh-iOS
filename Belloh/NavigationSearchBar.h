@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-@protocol NavigationSearchBarDelegate
+@protocol NavigationSearchBarDelegate <NSObject>
 
 - (void)searchInitiated:(NSString *)searchQuery;
 - (void)searchCancelled;

@@ -8,7 +8,7 @@
 
 #import "BLPost.h"
 
-@protocol CreateViewControllerDelegate
+@protocol CreateViewControllerDelegate <NSObject>
 
 - (void)createViewControllerDidCancel;
 - (void)createViewControllerDidPost:(BLPost *)post;
