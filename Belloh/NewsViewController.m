@@ -8,13 +8,11 @@
 
 #import "NewsViewController.h"
 #import "NewsTableViewCell.h"
-#import "Belloh.h"
 
 @interface NewsViewController ()
 
 @property (nonatomic) CLGeocoder *geocoder;
 @property (nonatomic) Belloh *belloh;
-
 @property (nonatomic, weak) IBOutlet NavigationSearchBar *navBar;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 

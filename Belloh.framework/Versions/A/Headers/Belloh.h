@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-#import "BLPost.h"
-#import <MapKit/MapKit.h>
+#import <Belloh/BLPost.h>
+#import <MapKit/MKGeometry.h>
 
 // NSLog extension which prints the name of the calling class and method
 #define BLLOG(format,...) NSLog([NSString stringWithFormat:@"%%@->%%@ %@",format],NSStringFromClass([self class]),NSStringFromSelector(_cmd),##__VA_ARGS__)

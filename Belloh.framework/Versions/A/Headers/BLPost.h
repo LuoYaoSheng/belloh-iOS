@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <UIKit/UIImage.h>
+
 @interface BLPost : NSObject
 
 @property (nonatomic, copy) NSString *message;
@@ -13,8 +16,8 @@
 @property (nonatomic, strong) UIImage *thumbnail;
 @property (nonatomic, assign) BOOL hasThumbnail;
 @property (nonatomic, copy) NSString *timestamp;
-@property (nonatomic, assign) CGFloat latitude;
-@property (nonatomic, assign) CGFloat longitude;
+@property (nonatomic, assign) float latitude;
+@property (nonatomic, assign) float longitude;
 @property (nonatomic, copy) NSString *id;
 
 - (void)setTimestampWithBSONId:(NSString *)BSONId;

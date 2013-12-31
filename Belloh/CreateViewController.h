@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-#import "BLPost.h"
+#import <Belloh/Belloh.h>
 
 @protocol CreateViewControllerDelegate <NSObject>
 
