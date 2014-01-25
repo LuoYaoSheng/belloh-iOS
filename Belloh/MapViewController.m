@@ -7,8 +7,12 @@
 //
 
 #import "MapViewController.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
 @interface MapViewController ()
+
+@property (nonatomic) CLLocationManager *locationManager;
 
 @end
 
@@ -18,6 +22,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
     
     [self.delegate mapViewControllerDidLoad:self];
 }
@@ -33,6 +40,23 @@
 - (IBAction)done:(id)sender
 {
     [self.delegate mapViewControllerDidFinish:self];
+}
+
+- (IBAction)findMe:(id)sender
+{
+    [self.locationManager startUpdatingLocation];
+}
+
+#pragma mark - CLLocationManager delegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation *location = [locations lastObject];
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, 3141, 3141);
+    MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:viewRegion];
+    [self.mapView setRegion:adjustedRegion animated:YES];
+    self.mapView.showsUserLocation = YES;
+    [self.locationManager stopUpdatingLocation];
 }
 
 @end

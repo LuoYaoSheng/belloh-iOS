@@ -20,6 +20,11 @@
 
 @implementation NewsViewController
 
+- (void)printMapRegion
+{
+    BLLOG(@"OK");
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder]) {
@@ -28,8 +33,9 @@
         CLLocationCoordinate2D locationCoordinate = CLLocationCoordinate2DMake(30.15596,0);
         MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
         
+        __weak __typeof(self)weakSelf = self;
         self->_belloh = [[Belloh alloc] initWithRegion:MKCoordinateRegionMake(locationCoordinate, span) completionHandler:^{
-            [self.tableView reloadData];
+            [weakSelf.tableView reloadData];
         }];
     }
     return self;
@@ -42,6 +48,7 @@
     
     [self.belloh BL_loadPosts];
     [self BL_setNavBarTitleToLocationName];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,6 +108,8 @@
 {
     MKCoordinateRegion region = [controller.mapView region];
     self.belloh.region = region;
+    [self.belloh BL_removeAllPosts];
+    [self.tableView reloadData];
     [self.belloh BL_loadPosts];
     [self BL_setNavBarTitleToLocationName];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -126,6 +135,14 @@
 }
 
 #pragma mark - Create View Controller Delegate
+
+- (void)createViewControllerDidLoad:(CreateViewController *)controller
+{
+    [controller.miniMap setRegion:self.belloh.region animated:NO];
+    MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
+    point.coordinate = self.belloh.region.center;
+    [controller.miniMap addAnnotation:point];
+}
 
 - (void)createViewControllerDidPost:(BLPost *)post
 {

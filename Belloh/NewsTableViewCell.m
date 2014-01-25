@@ -26,7 +26,6 @@
 - (void)setContent:(BLPost *)content;
 {
     CGRect frameRect = self.messageView.frame;
-    
     frameRect.size.height = self.frame.size.height-SIGNATURE_LABEL_HEIGHT-1;
 
 //
@@ -55,8 +54,9 @@
     [theContent setScrollEnabled:NO];
     [theContent setEditable:NO];
     [theContent setFont:self.messageView.font];
+    [theContent setTextColor:self.messageView.textColor];
     [theContent setBackgroundColor:self.messageView.backgroundColor];
-    [theContent setTintColor:[UIColor brownColor]];
+    [theContent setTintColor:self.messageView.tintColor];
     [theContent setDataDetectorTypes:UIDataDetectorTypeLink];
     
     [self.messageView removeFromSuperview];

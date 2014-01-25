@@ -19,10 +19,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-    CGRect frame = self.messageView.frame;
-    frame.size.height = 100.0f;
-    self.messageView.frame = frame;
-    
     //To make the border look very close to a UITextField
     [self.messageView.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.3] CGColor]];
     [self.messageView.layer setBorderWidth:1.0];
@@ -32,7 +28,9 @@
     self.messageView.clipsToBounds = YES;    
     self.postButton.layer.cornerRadius = 5;
     
-    [self.messageView becomeFirstResponder];
+    if ([self.delegate respondsToSelector:@selector(createViewControllerDidLoad:)]) {
+        [self.delegate createViewControllerDidLoad:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -47,12 +45,21 @@
     post.message = self.messageView.text;
     post.signature = self.signatureField.text;
 
-    [self.delegate createViewControllerDidPost:post];
+    if ([self.delegate respondsToSelector:@selector(createViewControllerDidPost:)]) {
+        [self.delegate createViewControllerDidPost:post];
+    }
 }
 
 - (IBAction)cancel:(id)sender
 {
-    [self.delegate createViewControllerDidCancel];
+    if ([self.delegate respondsToSelector:@selector(createViewControllerDidCancel)]) {
+        [self.delegate createViewControllerDidCancel];
+    }
+}
+
+- (IBAction)hideKeyboard:(id)sender
+{
+    [self.view endEditing:YES];
 }
 
 @end

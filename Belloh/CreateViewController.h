@@ -6,12 +6,16 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-#import <Belloh/Belloh.h>
+#import <MapKit/MapKit.h>
+
+@class BLPost, CreateViewController;
 
 @protocol CreateViewControllerDelegate <NSObject>
 
+@optional
 - (void)createViewControllerDidCancel;
 - (void)createViewControllerDidPost:(BLPost *)post;
+- (void)createViewControllerDidLoad:(CreateViewController *)controller;
 
 @end
 
@@ -21,8 +25,10 @@
 @property (nonatomic, weak) IBOutlet UITextView *messageView;
 @property (nonatomic, weak) IBOutlet UIButton *postButton;
 @property (nonatomic, weak) IBOutlet UITextField *signatureField;
+@property (nonatomic, weak) IBOutlet MKMapView *miniMap;
 
 - (IBAction)post:(id)sender;
 - (IBAction)cancel:(id)sender;
+- (IBAction)hideKeyboard:(id)sender;
 
 @end

@@ -11,7 +11,7 @@
 #define SIGNATURE_LABEL_HEIGHT 25.0f
 #define TABLE_CELL_MIN_HEIGHT 75.0f
 
-#import <Belloh/Belloh.h>
+@class BLPost;
 
 @interface NewsTableViewCell : UITableViewCell
 

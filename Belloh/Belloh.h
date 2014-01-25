@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-#import <Belloh/BLPost.h>
+#import "BLPost.h"
 #import <MapKit/MKGeometry.h>
 
 // NSLog extension which prints the name of the calling class and method
@@ -27,5 +27,6 @@ typedef void (^BLCompletionHandler)(void);
 - (void)BL_loadAndAppendOlderPosts;
 - (void)BL_loadPosts;
 - (void)BL_sendNewPost:(BLPost *)newPost;
+- (void)BL_removeAllPosts;
 
 @end

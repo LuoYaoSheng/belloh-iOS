@@ -12,16 +12,18 @@
 
 @protocol MapViewControllerDelegate <NSObject>
 
+@optional
 - (void)mapViewControllerDidLoad:(MapViewController *)controller;
 - (void)mapViewControllerDidFinish:(MapViewController *)controller;
 
 @end
 
-@interface MapViewController : UIViewController
+@interface MapViewController : UIViewController<CLLocationManagerDelegate>
 
 @property (weak, nonatomic) id<MapViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 - (IBAction)done:(id)sender;
+- (IBAction)findMe:(id)sender;
 
 @end

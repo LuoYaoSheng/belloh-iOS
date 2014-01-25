@@ -10,10 +10,8 @@
 #import "CreateViewController.h"
 #import "NavigationSearchBar.h"
 
-@protocol Belloh <CreateViewControllerDelegate,MapViewControllerDelegate,NavigationSearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface NewsViewController : UIViewController <CreateViewControllerDelegate,MapViewControllerDelegate,NavigationSearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
 
-@end
-
-@interface NewsViewController : UIViewController <Belloh>
+- (void)printMapRegion;
 
 @end
