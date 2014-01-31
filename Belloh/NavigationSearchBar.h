@@ -8,6 +8,7 @@
 
 @protocol NavigationSearchBarDelegate <NSObject>
 
+@optional
 - (void)searchInitiated:(NSString *)searchQuery;
 - (void)searchCancelled;
 

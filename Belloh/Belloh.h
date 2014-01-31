@@ -14,11 +14,20 @@
 
 typedef void (^BLCompletionHandler)(void);
 
+@protocol BellohDelegate <NSObject>
+
+@optional
+- (void)loadingPostsFinished;
+
+@end
+
 @interface Belloh : NSObject
 
 @property (nonatomic, copy) BLCompletionHandler completionHandler;
 @property (nonatomic, assign) MKCoordinateRegion region;
 @property (nonatomic, copy) NSString *filter;
+@property (nonatomic, copy) NSString *tag;
+@property (nonatomic, weak) id<BellohDelegate> delegate;
 
 - (id)initWithRegion:(MKCoordinateRegion)region completionHandler:(BLCompletionHandler)completionHandler;
 - (NSUInteger)BL_postCount;

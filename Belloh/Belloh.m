@@ -103,10 +103,6 @@
     }
     
     BLPost *lastPost = [self BL_lastPost];
-    if (!lastPost) {
-        return BLLOG(@"no posts loaded");
-    }
-    BLLOG(@"Load MORE");
     
     NSString *lastPostId = lastPost.id;
     NSString *postFilter = self.filter;
@@ -156,6 +152,11 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSString *queryURLString = [NSString stringWithFormat:@"%@?%@",postsURLString,query];
+        
+        if (self.tag) {
+            queryURLString = [NSString stringWithFormat:@"%@&tag=%@",queryURLString,self.tag];
+        }
+        
         NSURL *postsURL = [NSURL URLWithString:queryURLString];
         NSData *postsData = [NSData dataWithContentsOfURL:postsURL];
         
@@ -182,7 +183,9 @@
                 [self _BL_insertPostWithDictionary:dict atIndex:-1];
             }
             
-            self.completionHandler();
+            if ([self.delegate respondsToSelector:@selector(loadingPostsFinished)]) {
+                [self.delegate loadingPostsFinished];
+            }
         });
     });
 }

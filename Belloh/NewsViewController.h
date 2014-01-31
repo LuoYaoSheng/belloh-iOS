@@ -10,8 +10,6 @@
 #import "CreateViewController.h"
 #import "NavigationSearchBar.h"
 
-@interface NewsViewController : UIViewController <CreateViewControllerDelegate,MapViewControllerDelegate,NavigationSearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
-
-- (void)printMapRegion;
+@interface NewsViewController : UITableViewController<CreateViewControllerDelegate,MapViewControllerDelegate,NavigationSearchBarDelegate,BellohDelegate>
 
 @end

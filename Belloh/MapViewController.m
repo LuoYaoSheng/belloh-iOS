@@ -24,7 +24,6 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     self.locationManager = [[CLLocationManager alloc] init];
-    self.locationManager.delegate = self;
     
     [self.delegate mapViewControllerDidLoad:self];
 }
@@ -35,15 +34,17 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Actions
-
 - (IBAction)done:(id)sender
 {
     [self.delegate mapViewControllerDidFinish:self];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
+
+#pragma mark - Actions
 
 - (IBAction)findMe:(id)sender
 {
+    self.locationManager.delegate = self;
     [self.locationManager startUpdatingLocation];
 }
 
@@ -57,6 +58,7 @@
     [self.mapView setRegion:adjustedRegion animated:YES];
     self.mapView.showsUserLocation = YES;
     [self.locationManager stopUpdatingLocation];
+    self.locationManager.delegate = nil;
 }
 
 @end

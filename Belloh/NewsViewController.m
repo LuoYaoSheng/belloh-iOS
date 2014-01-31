@@ -13,17 +13,11 @@
 
 @property (nonatomic) CLGeocoder *geocoder;
 @property (nonatomic) Belloh *belloh;
-@property (nonatomic, weak) IBOutlet NavigationSearchBar *navBar;
-@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic) UIRefreshControl *refreshControl;
 
 @end
 
 @implementation NewsViewController
-
-- (void)printMapRegion
-{
-    BLLOG(@"OK");
-}
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -37,6 +31,8 @@
         self->_belloh = [[Belloh alloc] initWithRegion:MKCoordinateRegionMake(locationCoordinate, span) completionHandler:^{
             [weakSelf.tableView reloadData];
         }];
+        
+        self->_belloh.delegate = self;
     }
     return self;
 }
@@ -49,12 +45,55 @@
     [self.belloh BL_loadPosts];
     [self BL_setNavBarTitleToLocationName];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
+    [self setRefreshControl:self.refreshControl];
+    
+    [self.navigationController.navigationBar setDelegate:self];
+    
+    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showMap)];
+    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:leftSwipe];
+    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showMap)];
+    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.view addGestureRecognizer:rightSwipe];
+}
+
+- (void)showMap
+{
+    [self performSegueWithIdentifier:@"showMap" sender:self];
+}
+
+- (IBAction)switchTag:(UIBarButtonItem *)sender
+{
+    if ([sender.title isEqualToString:@"All"]) {
+        self.belloh.tag = nil;
+    }
+    else if ([sender.title isEqualToString:@"Events and Deals"]) {
+        self.belloh.tag = @"EnD";
+    }
+    else {
+        self.belloh.tag = sender.title;
+    }
+    [self.belloh BL_loadPosts];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)handleRefresh
+{
+    [self.belloh BL_loadPosts];
+}
+
+- (void)loadingPostsFinished
+{
+    [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - Table View Data Source
@@ -112,7 +151,6 @@
     [self.tableView reloadData];
     [self.belloh BL_loadPosts];
     [self BL_setNavBarTitleToLocationName];
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)mapViewControllerDidLoad:(MapViewController *)controller
@@ -183,7 +221,7 @@
             locationName = [NSString stringWithFormat:@"%@", placemark.name];
         }
         
-        UINavigationItem *item = self.navBar.topItem;
+        UINavigationItem *item = self.navigationController.navigationBar.topItem;
         item.title = locationName;
     }];
 }
