@@ -65,6 +65,16 @@
     return [self->_posts count];
 }
 
+- (void)removePostAtIndex:(NSUInteger)index
+{
+    [self->_posts removeObjectAtIndex:index];
+}
+
+- (void)insertPost:(BLPost *)post atIndex:(NSUInteger)index
+{
+    [self->_posts insertObject:post atIndex:index];
+}
+
 #pragma mark - Belloh Posts Queries
 
 + (NSString *)_BL_queryForRegion:(MKCoordinateRegion)region

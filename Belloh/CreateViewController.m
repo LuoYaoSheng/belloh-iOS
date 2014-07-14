@@ -14,18 +14,37 @@
 
 @implementation CreateViewController
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if ([touch.view isKindOfClass:[UIButton class]]) {
+        return NO;
+    }
+    return YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+    UITapGestureRecognizer *recog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    recog.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:recog];
+    
+    [[UITextField appearance] setTintColor:[UIColor darkTextColor]];
+    self.signatureField.tintColor = [UIColor darkTextColor];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    self.signatureField.text = [defaults objectForKey:@"signature"];
+    
     //To make the border look very close to a UITextField
     [self.messageView.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.3] CGColor]];
     [self.messageView.layer setBorderWidth:1.0];
     
     //The rounded corner part, where you specify your view's corner radius:
     self.messageView.layer.cornerRadius = 5;
-    self.messageView.clipsToBounds = YES;    
+    self.messageView.clipsToBounds = YES;
+    self.messageView.placeholder = @"Say something...";
     self.postButton.layer.cornerRadius = 5;
     
     if ([self.delegate respondsToSelector:@selector(createViewControllerDidLoad:)]) {
@@ -41,12 +60,24 @@
 
 - (IBAction)post:(id)sender
 {
-    BLPost *post = [[BLPost alloc] init];
-    post.message = self.messageView.text;
-    post.signature = self.signatureField.text;
-
-    if ([self.delegate respondsToSelector:@selector(createViewControllerDidPost:)]) {
-        [self.delegate createViewControllerDidPost:post];
+    NSString *msg = self.messageView.text;
+    if ([msg length] == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Post can't be empty!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    else {
+        BLPost *post = [[BLPost alloc] init];
+        post.message = msg;
+        NSString *sig = self.signatureField.text;
+        post.signature = sig;
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:sig forKey:@"signature"];
+        [defaults synchronize];
+        
+        if ([self.delegate respondsToSelector:@selector(createViewControllerDidPost:)]) {
+            [self.delegate createViewControllerDidPost:post];
+        }
     }
 }
 

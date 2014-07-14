@@ -53,8 +53,8 @@
 
 - (void)_searchCancelled
 {
-    if ([self.delegate respondsToSelector:@selector(searchCancelled)]) {
-        [self.delegate searchCancelled];
+    if ([self.myDelegate respondsToSelector:@selector(searchCancelled)]) {
+        [self.myDelegate searchCancelled];
     }
     UINavigationItem *item = self.topItem;
     item.rightBarButtonItem = self.rightButton;
@@ -65,8 +65,8 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
-    if ([self.delegate respondsToSelector:@selector(searchInitiated:)]) {
-        [self.delegate searchInitiated:searchBar.text];
+    if ([self.myDelegate respondsToSelector:@selector(searchInitiated:)]) {
+        [self.myDelegate searchInitiated:searchBar.text];
     }
 }
 

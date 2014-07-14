@@ -17,6 +17,8 @@
 		253D650E189361F300DC60B5 /* Belloh.m in Sources */ = {isa = PBXBuildFile; fileRef = 253D650B189361F300DC60B5 /* Belloh.m */; };
 		253D650F189361F300DC60B5 /* BLPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 253D650D189361F300DC60B5 /* BLPost.m */; };
 		253D65131893A3DA00DC60B5 /* ios_draft_belloh_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 253D65121893A3DA00DC60B5 /* ios_draft_belloh_small.png */; };
+		2579F30B197476ED00AF1BF9 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2579F30A197476ED00AF1BF9 /* WebViewController.m */; };
+		2579F30E19749B8A00AF1BF9 /* PlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2579F30D19749B8A00AF1BF9 /* PlaceholderTextView.m */; };
 		25C33239186248B000DA8271 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C33238186248B000DA8271 /* Foundation.framework */; };
 		25C3323B186248B000DA8271 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C3323A186248B000DA8271 /* CoreGraphics.framework */; };
 		25C3323D186248B000DA8271 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C3323C186248B000DA8271 /* UIKit.framework */; };
@@ -60,6 +62,10 @@
 		253D650C189361F300DC60B5 /* BLPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPost.h; sourceTree = "<group>"; };
 		253D650D189361F300DC60B5 /* BLPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPost.m; sourceTree = "<group>"; };
 		253D65121893A3DA00DC60B5 /* ios_draft_belloh_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_draft_belloh_small.png; sourceTree = SOURCE_ROOT; };
+		2579F309197476ED00AF1BF9 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		2579F30A197476ED00AF1BF9 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		2579F30C19749B8A00AF1BF9 /* PlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderTextView.h; sourceTree = "<group>"; };
+		2579F30D19749B8A00AF1BF9 /* PlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderTextView.m; sourceTree = "<group>"; };
 		25C33235186248B000DA8271 /* Belloh.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Belloh.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25C33238186248B000DA8271 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		25C3323A186248B000DA8271 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -150,6 +156,10 @@
 				25058264186BA89F00C28EC4 /* CreateViewController.m */,
 				25058266186CBC0100C28EC4 /* NavigationSearchBar.h */,
 				25058267186CBC0100C28EC4 /* NavigationSearchBar.m */,
+				2579F309197476ED00AF1BF9 /* WebViewController.h */,
+				2579F30A197476ED00AF1BF9 /* WebViewController.m */,
+				2579F30C19749B8A00AF1BF9 /* PlaceholderTextView.h */,
+				2579F30D19749B8A00AF1BF9 /* PlaceholderTextView.m */,
 				25C3324A186248B000DA8271 /* Main.storyboard */,
 				25C33253186248B000DA8271 /* Images.xcassets */,
 				25C3323F186248B000DA8271 /* Supporting Files */,
@@ -239,7 +249,7 @@
 		25C3322D186248B000DA8271 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Eric Webster";
 				TargetAttributes = {
 					25C33234186248B000DA8271 = {
@@ -299,12 +309,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				25C33249186248B000DA8271 /* AppDelegate.m in Sources */,
+				2579F30B197476ED00AF1BF9 /* WebViewController.m in Sources */,
 				253D650E189361F300DC60B5 /* Belloh.m in Sources */,
 				25058268186CBC0100C28EC4 /* NavigationSearchBar.m in Sources */,
 				25058265186BA89F00C28EC4 /* CreateViewController.m in Sources */,
 				250CD3231868F01E00C66E99 /* MapViewController.m in Sources */,
 				25C33245186248B000DA8271 /* main.m in Sources */,
 				250CD3241868F01E00C66E99 /* NewsViewController.m in Sources */,
+				2579F30E19749B8A00AF1BF9 /* PlaceholderTextView.m in Sources */,
 				253D650F189361F300DC60B5 /* BLPost.m in Sources */,
 				250CD3271868F22B00C66E99 /* NewsTableViewCell.m in Sources */,
 			);
@@ -360,7 +372,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -399,7 +410,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -477,7 +487,6 @@
 		25C3326E186248B000DA8271 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Belloh.app/Belloh";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -500,7 +509,6 @@
 		25C3326F186248B000DA8271 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Belloh.app/Belloh";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

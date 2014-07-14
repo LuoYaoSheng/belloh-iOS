@@ -16,6 +16,6 @@
 
 @interface NavigationSearchBar : UINavigationBar<UISearchBarDelegate>
 
-@property (weak, nonatomic) id<NavigationSearchBarDelegate> delegate;
+@property (weak, nonatomic) id<NavigationSearchBarDelegate> myDelegate;
 
 @end

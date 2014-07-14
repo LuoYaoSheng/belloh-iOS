@@ -31,6 +31,8 @@ typedef void (^BLCompletionHandler)(void);
 
 - (id)initWithRegion:(MKCoordinateRegion)region completionHandler:(BLCompletionHandler)completionHandler;
 - (NSUInteger)BL_postCount;
+- (void)removePostAtIndex:(NSUInteger)index;
+- (void)insertPost:(BLPost *)post atIndex:(NSUInteger)index;
 - (BLPost *)BL_postAtIndex:(NSUInteger)index;
 - (BLPost *)BL_lastPost;
 - (void)BL_loadAndAppendOlderPosts;

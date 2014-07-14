@@ -7,6 +7,7 @@
 //
 
 #import <MapKit/MapKit.h>
+#import "PlaceholderTextView.h"
 
 @class BLPost, CreateViewController;
 
@@ -19,10 +20,10 @@
 
 @end
 
-@interface CreateViewController : UIViewController
+@interface CreateViewController : UIViewController<UINavigationBarDelegate>
 
 @property (nonatomic, weak) id<CreateViewControllerDelegate> delegate;
-@property (nonatomic, weak) IBOutlet UITextView *messageView;
+@property (nonatomic, weak) IBOutlet PlaceholderTextView *messageView;
 @property (nonatomic, weak) IBOutlet UIButton *postButton;
 @property (nonatomic, weak) IBOutlet UITextField *signatureField;
 @property (nonatomic, weak) IBOutlet MKMapView *miniMap;
