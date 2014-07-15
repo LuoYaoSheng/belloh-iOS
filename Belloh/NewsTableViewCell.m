@@ -22,7 +22,6 @@
 
 - (void)setContent:(BLPost *)content;
 {
-    self.thumbnailImageView.image = content.thumbnail;
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize:14.f]};
     NSAttributedString *boldSig = [[NSAttributedString alloc] initWithString:content.signature attributes:attributes];
     NSMutableAttributedString *timestamp = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ago by ", content.timestamp]];

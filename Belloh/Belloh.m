@@ -33,13 +33,42 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
     return self;
 }
 
-- (id)initWithRegion:(MKCoordinateRegion)region completionHandler:(BLCompletionHandler)completionHandler
+- (id)initWithRegion:(MKCoordinateRegion)region
 {
     if (self = [self init]) {
-        self.completionHandler = completionHandler;
         self.region = region;
     }
     return self;
+}
+
+- (void)setFilter:(NSString *)filter
+{
+    if ([filter length] && ![self.filter isEqualToString:filter]) {
+        self->_filteredResults = [NSMutableArray array];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(message CONTAINS[cd] %@) OR (signature CONTAINS[cd] %@)", filter, filter];
+            NSArray *results = [self->_posts filteredArrayUsingPredicate:predicate];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                BLLOG(@"results: %@", results);
+                if ([results count]) {
+                    self->_remainingPosts &= ~BLNoFilteredResultsRemaining;
+                    self->_filteredResults = [results mutableCopy];
+                    if ([self.delegate respondsToSelector:@selector(loadingPostsFinished)]) {
+                        [self.delegate loadingPostsFinished];
+                    }
+                }
+                else {
+                    [self _BL_loadPostsForRegion:self.region filter:filter];
+                }
+            });
+        });
+    }
+    else if ([filter length] == 0) {
+        [self->_filteredResults removeAllObjects];
+    }
+    self->_filter = filter;
 }
 
 #pragma mark - Belloh Posts
@@ -148,19 +177,19 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
 
 - (void)BL_loadPosts
 {
-    [self BL_removeAllPosts];
+    [self->_posts removeAllObjects];
     NSString *postFilter = self.filter;
-    if (postFilter) {
-        [self _BL_loadPostsForRegion:self.region filter:postFilter];
-    }
-    else {
-        [self _BL_loadPostsForRegion:self.region];
-    }
+    self.filter = nil;
+    // First load posts then load filtered results.
+    
+    [self _BL_loadPostsForRegion:self.region completion:^{
+        self.filter = postFilter;
+    }];
 }
 
-- (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region
+- (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region completion:(void (^)(void))completion
 {
-    [self _BL_loadPostsForQuery:[Belloh _BL_queryForRegion:region]];
+    [self _BL_loadPostsForQuery:[Belloh _BL_queryForRegion:region] completion:completion];
 }
 
 - (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId
@@ -170,25 +199,7 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
 
 - (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region filter:(NSString *)filter
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(message CONTAINS[cd] %@) OR (signature CONTAINS[cd] %@)", filter, filter];
-        NSArray *results = [self->_posts filteredArrayUsingPredicate:predicate];
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            BLLOG(@"results: %@", results);
-            if ([results count]) {
-                self->_remainingPosts &= ~BLNoFilteredResultsRemaining;
-                self->_filteredResults = [results mutableCopy];
-                if ([self.delegate respondsToSelector:@selector(loadingPostsFinished)]) {
-                    [self.delegate loadingPostsFinished];
-                }
-            }
-            else {
-                self->_filteredResults = [NSMutableArray array];
-                [self _BL_loadPostsForQuery:[Belloh _BL_queryForRegion:region filter:filter]];
-            }
-        });
-    });
+    [self _BL_loadPostsForQuery:[Belloh _BL_queryForRegion:region filter:filter]];
 }
 
 - (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId filter:(NSString *)filter
@@ -197,6 +208,11 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
 }
 
 - (void)_BL_loadPostsForQuery:(NSString *)query
+{
+    [self _BL_loadPostsForQuery:query completion:nil];
+}
+
+- (void)_BL_loadPostsForQuery:(NSString *)query completion:(void (^)(void))completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     
@@ -222,7 +238,7 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
                 return;
             }
             
-            NSError *error = nil;
+            NSError *error;
             NSArray *postsArray = [NSJSONSerialization JSONObjectWithData:postsData options:0 error:&error];
             
             if (error) {
@@ -239,6 +255,10 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
             
             for (NSDictionary *dict in postsArray) {
                 [self _BL_insertPostWithDictionary:dict atIndex:-1];
+            }
+            
+            if (completion) {
+                completion();
             }
             
             if ([self.delegate respondsToSelector:@selector(loadingPostsFinished)]) {
@@ -259,29 +279,14 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
     [post setTimestampWithBSONId:post.id];
     post.hasThumbnail = [[postDictionary objectForKey:@"thumb"] boolValue];
     
-    if (post.hasThumbnail) {
-        static NSString *thumbnailURLFormat = @"http://s3.amazonaws.com/belloh/thumbs/%@.jpg";
-        NSString *URLString = [NSString stringWithFormat:thumbnailURLFormat, post.id];
-        NSURL *imageURL = [NSURL URLWithString:URLString];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                post.thumbnail = [UIImage imageWithData:imageData];
-                self.completionHandler();
-            });
-        });
-    }
-    else {
-        post.thumbnail = nil;
-    }
+    static NSString *thumbnailURLFormat = @"http://s3.amazonaws.com/belloh/thumbs/%@.jpg";
+    post.thumbnail = [NSString stringWithFormat:thumbnailURLFormat, post.id];;
     
     if (signedIndex == -1) {
         [self _BL_appendPost:post];
     }
     else if (signedIndex < -1) {
-        NSUInteger i = [self BL_postCount]+signedIndex;
+        NSUInteger i = [self BL_postCount] + signedIndex;
         [self _BL_insertPost:post atIndex:i];
     }
     else {
@@ -291,7 +296,7 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
 
 #pragma mark - Belloh New Post
 
-- (void)BL_sendNewPost:(BLPost *)newPost
+- (void)BL_sendNewPost:(BLPost *)newPost completion:(void (^)(void))completion
 {
     NSURL *newPostURL = [NSURL URLWithString:apiBaseURLString];
     NSMutableURLRequest *newPostRequest = [NSMutableURLRequest requestWithURL:newPostURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
@@ -329,7 +334,10 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
          }
          
          [self _BL_insertPostWithDictionary:dict atIndex:0];
-         self.completionHandler();
+         
+         if (completion) {
+             completion();
+         }
      }];
 }
 

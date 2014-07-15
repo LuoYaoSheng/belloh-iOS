@@ -10,6 +10,10 @@
 #import "NewsTableViewCell.h"
 #import "WebViewController.h"
 
+#import "UIImageView+AFNetworking.h"
+#import "NSValue+MKCoordinateRegion.h"
+#import "NSData+NSValue.h"
+
 @interface NewsViewController ()
 
 @property (nonatomic) CLGeocoder *geocoder;
@@ -31,14 +35,22 @@
 
         self.belloh = [[Belloh alloc] init];
         self.belloh.delegate = self;
-        __weak __typeof(self)weakSelf = self;
-        self.belloh.completionHandler = ^{
-            [weakSelf.tableView reloadData];
-        };
         
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-        [self.locationManager startUpdatingLocation];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSData *data = [defaults objectForKey:@"region"];
+        
+        if (data) {
+            NSValue *region = [data valueWithObjCType:@encode(MKCoordinateRegion)];
+            self.belloh.region = [region MKCoordinateRegionValue];
+            [self.belloh BL_loadPosts];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            [self BL_setNavBarTitleToLocationName];
+        }
+        else {
+            self.locationManager = [[CLLocationManager alloc] init];
+            self.locationManager.delegate = self;
+            [self.locationManager startUpdatingLocation];
+        }
     }
     return self;
 }
@@ -65,6 +77,7 @@
 
     [self.tableView layoutIfNeeded];
     self.tableView.editing = YES;
+    self.tableView.estimatedRowHeight = 75.f;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
@@ -161,6 +174,19 @@
     
     if (post.hasThumbnail) {
         cell = [tableView dequeueReusableCellWithIdentifier:ThumbCellIdentifier forIndexPath:indexPath];
+        
+        NSURL *imageURL = [NSURL URLWithString:post.thumbnail];
+        NSURLRequest *request = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLCacheStorageAllowed timeoutInterval:30.0];
+        [cell.thumbnailImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
+            if (response) {
+            // TODO: might need better way to do this.
+                NewsTableViewCell *currentCell = (NewsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+                currentCell.thumbnailImageView.image = image;
+            }
+            else {
+                cell.thumbnailImageView.image = image;
+            }
+        } failure:nil];
     }
     else {
         cell = [tableView dequeueReusableCellWithIdentifier:NoThumbCellIdentifier forIndexPath:indexPath];
@@ -242,6 +268,14 @@
 {
     MKCoordinateRegion region = [controller.mapView region];
     self.belloh.region = region;
+    
+    // Save the region
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSValue *value = [NSValue valueWithMKCoordinateRegion:region];
+    NSData *data = [NSData dataWithValue:value];
+    [defaults setObject:data forKey:@"region"];
+    [defaults synchronize];
+    
     [self.belloh BL_removeAllPosts];
     [self.tableView reloadData];
     [self.belloh BL_loadPosts];
@@ -285,7 +319,10 @@
     CLLocationCoordinate2D location = self.belloh.region.center;
     post.latitude = location.latitude;
     post.longitude = location.longitude;
-    [self.belloh BL_sendNewPost:post];
+    __weak __typeof(self)weakSelf = self;
+    [self.belloh BL_sendNewPost:post completion:^{
+        [weakSelf.tableView reloadData];
+    }];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -302,6 +339,7 @@
     CLLocation *location = [[CLLocation alloc] initWithLatitude:center.latitude longitude:center.longitude];
     
     self.navigationItem.title = nil;
+    [self.timer invalidate];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateEllipsis:) userInfo:nil repeats:YES];
 
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
@@ -335,7 +373,6 @@
     self.previousVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
     self.belloh.filter = searchQuery;
     BLLOG(@"Filter: %@", searchQuery);
-    [self.belloh BL_loadPosts];
 }
 
 - (void)searchCancelled
@@ -343,7 +380,14 @@
     if (self.belloh.filter) {
         self.belloh.filter = nil;
         [self.tableView reloadData];
-        [self.tableView scrollToRowAtIndexPath:self.previousVisibleIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        NSUInteger rows = [self tableView:self.tableView numberOfRowsInSection:self.previousVisibleIndexPath.section];
+        if (self.previousVisibleIndexPath.row < rows) {
+            [self.tableView scrollToRowAtIndexPath:self.previousVisibleIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        }
+        else {
+            [self.tableView setContentOffset:CGPointZero animated:NO];
+            self.previousVisibleIndexPath = nil;
+        }
     }
 }
 

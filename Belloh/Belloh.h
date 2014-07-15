@@ -23,13 +23,12 @@ typedef void (^BLCompletionHandler)(void);
 
 @interface Belloh : NSObject
 
-@property (nonatomic, copy) BLCompletionHandler completionHandler;
 @property (nonatomic, assign) MKCoordinateRegion region;
 @property (nonatomic, copy) NSString *filter;
 @property (nonatomic, copy) NSString *tag;
 @property (nonatomic, weak) id<BellohDelegate> delegate;
 
-- (id)initWithRegion:(MKCoordinateRegion)region completionHandler:(BLCompletionHandler)completionHandler;
+- (id)initWithRegion:(MKCoordinateRegion)region;
 - (NSUInteger)BL_postCount;
 - (void)removePostAtIndex:(NSUInteger)index;
 - (void)insertPost:(BLPost *)post atIndex:(NSUInteger)index;
@@ -37,7 +36,7 @@ typedef void (^BLCompletionHandler)(void);
 - (BLPost *)BL_lastPost;
 - (void)BL_loadAndAppendOlderPosts;
 - (void)BL_loadPosts;
-- (void)BL_sendNewPost:(BLPost *)newPost;
+- (void)BL_sendNewPost:(BLPost *)newPost completion:(void (^)(void))completion;
 - (void)BL_removeAllPosts;
 
 @end

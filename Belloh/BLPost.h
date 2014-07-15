@@ -13,7 +13,7 @@
 
 @property (nonatomic, copy) NSString *message;
 @property (nonatomic, copy) NSString *signature;
-@property (nonatomic, strong) UIImage *thumbnail;
+@property (nonatomic, strong) NSString *thumbnail;
 @property (nonatomic, assign) BOOL hasThumbnail;
 @property (nonatomic, copy) NSString *timestamp;
 @property (nonatomic, assign) float latitude;
