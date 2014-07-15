@@ -18,6 +18,7 @@
 @property (nonatomic) NSURL *selectedURL;
 @property (nonatomic) CLLocationManager *locationManager;
 @property (nonatomic) NSTimer *timer;
+@property (nonatomic) NSIndexPath *previousVisibleIndexPath;
 
 @end
 
@@ -323,8 +324,7 @@
             locationName = [NSString stringWithFormat:@"%@", placemark.name];
         }
         
-        UINavigationItem *item = self.navigationController.navigationBar.topItem;
-        item.title = locationName;
+        self.navigationItem.title = locationName;
     }];
 }
 
@@ -332,6 +332,7 @@
 
 - (void)searchInitiated:(NSString *)searchQuery
 {
+    self.previousVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
     self.belloh.filter = searchQuery;
     BLLOG(@"Filter: %@", searchQuery);
     [self.belloh BL_loadPosts];
@@ -342,6 +343,7 @@
     if (self.belloh.filter) {
         self.belloh.filter = nil;
         [self.tableView reloadData];
+        [self.tableView scrollToRowAtIndexPath:self.previousVisibleIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
 

@@ -8,15 +8,22 @@
 
 #import "Belloh.h"
 
+enum {
+    BLNoPostsRemaining = 1,
+    BLNoFilteredResultsRemaining = 2
+};
+
 @implementation Belloh {
-    
+
 @private
     NSMutableArray *_posts;
     NSMutableArray *_filteredResults;
-    BOOL _noRemainingPosts;
+    int _remainingPosts;
     NSString *_loadUUID;
     
 }
+
+static NSString *apiBaseURLString = @"http://www.belloh.com";
 
 - (id)init
 {
@@ -39,7 +46,7 @@
 
 - (NSMutableArray *)_BL_posts
 {
-    return self.filter == nil ? self->_posts : self->_filteredResults;
+    return [self.filter length] == 0 ? self->_posts : self->_filteredResults;
 }
 
 - (BLPost *)BL_postAtIndex:(NSUInteger)index
@@ -115,13 +122,21 @@
 
 - (void)BL_loadAndAppendOlderPosts
 {
-    if (self->_noRemainingPosts) {
+    BLLOG(@"%i, %i",self->_remainingPosts,self->_remainingPosts&BLNoPostsRemaining);
+    
+    if (self->_remainingPosts&BLNoPostsRemaining) {
         return;
     }
     
+    NSString *postFilter = self.filter;
+
+    if (postFilter && self->_remainingPosts&BLNoFilteredResultsRemaining) {
+        return;
+    }
+    
+    BLLOG(@"loading more posts...");
     BLPost *lastPost = [self BL_lastPost];
     NSString *lastPostId = lastPost.id;
-    NSString *postFilter = self.filter;
     
     if (postFilter) {
         [self _BL_loadPostsForRegion:self.region lastPostId:lastPostId filter:postFilter];
@@ -158,10 +173,11 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(message CONTAINS[cd] %@) OR (signature CONTAINS[cd] %@)", filter, filter];
         NSArray *results = [self->_posts filteredArrayUsingPredicate:predicate];
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             BLLOG(@"results: %@", results);
             if ([results count]) {
+                self->_remainingPosts &= ~BLNoFilteredResultsRemaining;
                 self->_filteredResults = [results mutableCopy];
                 if ([self.delegate respondsToSelector:@selector(loadingPostsFinished)]) {
                     [self.delegate loadingPostsFinished];
@@ -182,21 +198,19 @@
 
 - (void)_BL_loadPostsForQuery:(NSString *)query
 {
-    static NSString *postsURLString = @"http://www.belloh.com/posts";
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     
         // Used to make sure only latest query is used.
         NSString *UUID = [[NSUUID UUID] UUIDString];
         self->_loadUUID = UUID;
 
-        NSString *queryURLString = [NSString stringWithFormat:@"%@?%@",postsURLString,query];
+        NSString *queryURLString = [NSString stringWithFormat:@"posts?%@", query];
         
         if (self.tag) {
-            queryURLString = [NSString stringWithFormat:@"%@&tag=%@",queryURLString,self.tag];
+            queryURLString = [NSString stringWithFormat:@"%@&tag=%@", queryURLString, self.tag];
         }
         
-        NSURL *postsURL = [NSURL URLWithString:queryURLString];
+        NSURL *postsURL = [NSURL URLWithString:queryURLString relativeToURL:[NSURL URLWithString:apiBaseURLString]];
         NSData *postsData = [NSData dataWithContentsOfURL:postsURL];
         
         if (postsData == nil) {
@@ -214,11 +228,13 @@
             if (error) {
                 return BLLOG(@"%@", error);
             }
-            else if ([postsArray count] == 0) {
-                self->_noRemainingPosts = YES;
+            
+            int num = (self.filter == nil ? BLNoPostsRemaining : BLNoFilteredResultsRemaining);
+            if ([postsArray count] == 0) {
+                self->_remainingPosts |= num;
             }
             else {
-                self->_noRemainingPosts = NO;
+                self->_remainingPosts &= ~num;
             }
             
             for (NSDictionary *dict in postsArray) {
@@ -277,7 +293,7 @@
 
 - (void)BL_sendNewPost:(BLPost *)newPost
 {
-    NSURL *newPostURL = [NSURL URLWithString:@"http://www.belloh.com/"];
+    NSURL *newPostURL = [NSURL URLWithString:apiBaseURLString];
     NSMutableURLRequest *newPostRequest = [NSMutableURLRequest requestWithURL:newPostURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
     newPostRequest.HTTPMethod = @"POST";
     [newPostRequest setValue:@"application/json" forHTTPHeaderField:@"content-type"];
