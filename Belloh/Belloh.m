@@ -12,6 +12,7 @@
     
 @private
     NSMutableArray *_posts;
+    NSMutableArray *_filteredResults;
     BOOL _noRemainingPosts;
     NSString *_loadUUID;
     
@@ -36,44 +37,49 @@
 
 #pragma mark - Belloh Posts
 
+- (NSMutableArray *)_BL_posts
+{
+    return self.filter == nil ? self->_posts : self->_filteredResults;
+}
+
 - (BLPost *)BL_postAtIndex:(NSUInteger)index
 {
-    return self->_posts[index];
+    return self._BL_posts[index];
 }
 
 - (BLPost *)BL_lastPost
 {
-    return [self->_posts lastObject];
+    return [self._BL_posts lastObject];
 }
 
 - (void)_BL_appendPost:(BLPost *)post
 {
-    [self->_posts addObject:post];
+    [self._BL_posts addObject:post];
 }
 
 - (void)_BL_insertPost:(BLPost *)post atIndex:(NSUInteger)index
 {
-    [self->_posts insertObject:post atIndex:index];
+    [self._BL_posts insertObject:post atIndex:index];
 }
 
 - (void)BL_removeAllPosts
 {
-    [self->_posts removeAllObjects];
+    [self._BL_posts removeAllObjects];
 }
 
 - (NSUInteger)BL_postCount
 {
-    return [self->_posts count];
+    return [self._BL_posts count];
 }
 
 - (void)removePostAtIndex:(NSUInteger)index
 {
-    [self->_posts removeObjectAtIndex:index];
+    [self._BL_posts removeObjectAtIndex:index];
 }
 
 - (void)insertPost:(BLPost *)post atIndex:(NSUInteger)index
 {
-    [self->_posts insertObject:post atIndex:index];
+    [self._BL_posts insertObject:post atIndex:index];
 }
 
 #pragma mark - Belloh Posts Queries
@@ -114,9 +120,9 @@
     }
     
     BLPost *lastPost = [self BL_lastPost];
-    
     NSString *lastPostId = lastPost.id;
     NSString *postFilter = self.filter;
+    
     if (postFilter) {
         [self _BL_loadPostsForRegion:self.region lastPostId:lastPostId filter:postFilter];
     }
@@ -149,7 +155,24 @@
 
 - (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region filter:(NSString *)filter
 {
-    [self _BL_loadPostsForQuery:[Belloh _BL_queryForRegion:region filter:filter]];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(message CONTAINS[cd] %@) OR (signature CONTAINS[cd] %@)", filter, filter];
+        NSArray *results = [self->_posts filteredArrayUsingPredicate:predicate];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            BLLOG(@"results: %@", results);
+            if ([results count]) {
+                self->_filteredResults = [results mutableCopy];
+                if ([self.delegate respondsToSelector:@selector(loadingPostsFinished)]) {
+                    [self.delegate loadingPostsFinished];
+                }
+            }
+            else {
+                self->_filteredResults = [NSMutableArray array];
+                [self _BL_loadPostsForQuery:[Belloh _BL_queryForRegion:region filter:filter]];
+            }
+        });
+    });
 }
 
 - (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId filter:(NSString *)filter
@@ -162,6 +185,8 @@
     static NSString *postsURLString = @"http://www.belloh.com/posts";
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    
+        // Used to make sure only latest query is used.
         NSString *UUID = [[NSUUID UUID] UUIDString];
         self->_loadUUID = UUID;
 

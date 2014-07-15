@@ -21,8 +21,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textEndedEditing:) name:UITextViewTextDidEndEditingNotification object:self];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textBeganEditing:) name:UITextViewTextDidBeginEditingNotification object:self];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextViewTextDidBeginEditingNotification object:self];
     }
     return self;
 }
@@ -30,8 +29,7 @@
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textEndedEditing:) name:UITextViewTextDidEndEditingNotification object:self];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textBeganEditing:) name:UITextViewTextDidBeginEditingNotification object:self];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextViewTextDidBeginEditingNotification object:self];
     }
     return self;
 }
@@ -39,8 +37,7 @@
 - (id)init
 {
     if (self = [super init]) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textEndedEditing:) name:UITextViewTextDidEndEditingNotification object:self];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textBeganEditing:) name:UITextViewTextDidBeginEditingNotification object:self];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextViewTextDidBeginEditingNotification object:self];
     }
     return self;
 }
@@ -50,20 +47,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)textBeganEditing:(NSNotification *)notification
+- (void)textChanged:(NSNotification *)notification
 {
     [UIView animateWithDuration:0.1 animations:^{
-        self.placeholderLabel.alpha = 0;
-    }];
-}
-
-- (void)textEndedEditing:(NSNotification *)notification
-{
-    if([self.text length] == 0) {
-        [UIView animateWithDuration:0.1 animations:^{
+        if([self.text length] == 0) {
             self.placeholderLabel.alpha = 1;
-        }];
-    }
+        }
+        else {
+            self.placeholderLabel.alpha = 0;
+        }
+    }];
 }
 
 - (UIColor *)placeholderColor

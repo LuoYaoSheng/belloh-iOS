@@ -334,7 +334,6 @@
 {
     self.belloh.filter = searchQuery;
     BLLOG(@"Filter: %@", searchQuery);
-
     [self.belloh BL_loadPosts];
 }
 
@@ -342,7 +341,7 @@
 {
     if (self.belloh.filter) {
         self.belloh.filter = nil;
-        [self.belloh BL_loadPosts];
+        [self.tableView reloadData];
     }
 }
 
