@@ -22,6 +22,7 @@
 
 @property (weak, nonatomic) id<MapViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIButton *findMeButton;
 
 - (IBAction)findMe:(id)sender;
 

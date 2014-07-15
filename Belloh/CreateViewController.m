@@ -42,7 +42,7 @@
     [self.messageView.layer setBorderWidth:1.0];
     
     //The rounded corner part, where you specify your view's corner radius:
-    self.messageView.layer.cornerRadius = 5;
+    self.messageView.layer.cornerRadius = 5.f;
     self.messageView.clipsToBounds = YES;
     self.messageView.placeholder = @"Say something...";
     self.postButton.layer.cornerRadius = 5;

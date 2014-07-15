@@ -23,6 +23,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    self.findMeButton.layer.cornerRadius = 5.f;
     self.locationManager = [[CLLocationManager alloc] init];
     
     [self.delegate mapViewControllerDidLoad:self];

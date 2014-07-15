@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="dSl-MA-oc1">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Create View Controller-->
@@ -80,7 +79,7 @@
                                         </connections>
                                     </button>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRl-Gf-fJH">
-                                        <rect key="frame" x="0.0" y="229" width="320" height="272"/>
+                                        <rect key="frame" x="0.0" y="229" width="320" height="274"/>
                                     </mapView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -104,7 +103,7 @@
                         <color key="backgroundColor" red="0.81960784310000001" green="0.61022109479999997" blue="0.18649940679999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9oA-Wl-DSC" firstAttribute="trailing" secondItem="UEY-Fp-1Dz" secondAttribute="trailing" id="7qT-0h-bJv"/>
-                            <constraint firstAttribute="height" secondItem="TRl-Gf-fJH" secondAttribute="height" multiplier="2" constant="24" id="9hP-WL-vH6"/>
+                            <constraint firstAttribute="height" secondItem="TRl-Gf-fJH" secondAttribute="height" constant="294" id="9hP-WL-vH6"/>
                             <constraint firstItem="9oA-Wl-DSC" firstAttribute="bottom" secondItem="UEY-Fp-1Dz" secondAttribute="top" id="Ufw-SR-lhE"/>
                             <constraint firstItem="9oA-Wl-DSC" firstAttribute="leading" secondItem="UEY-Fp-1Dz" secondAttribute="leading" id="VCM-0q-oAc"/>
                             <constraint firstItem="9oA-Wl-DSC" firstAttribute="leading" secondItem="Oq1-WW-gdN" secondAttribute="leading" id="Y3a-Ml-XvY"/>
@@ -183,6 +182,7 @@
                         </connections>
                     </navigationItem>
                     <connections>
+                        <outlet property="findMeButton" destination="oQL-jr-DaV" id="JdW-5o-t1v"/>
                         <outlet property="mapView" destination="RBw-Gn-Zfv" id="vVs-oI-frs"/>
                     </connections>
                 </viewController>

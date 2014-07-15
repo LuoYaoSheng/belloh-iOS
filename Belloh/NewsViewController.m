@@ -16,6 +16,7 @@
 @property (nonatomic) Belloh *belloh;
 @property (nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic) NSURL *selectedURL;
+@property (nonatomic) CLLocationManager *locationManager;
 
 @end
 
@@ -26,17 +27,32 @@
     if (self = [super initWithCoder:aDecoder]) {
         self->_geocoder = [[CLGeocoder alloc] init];
 
-        CLLocationCoordinate2D locationCoordinate = CLLocationCoordinate2DMake(30.15596,0);
-        MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
-        
-        __weak __typeof(self)weakSelf = self;
-        self->_belloh = [[Belloh alloc] initWithRegion:MKCoordinateRegionMake(locationCoordinate, span) completionHandler:^{
-            [weakSelf.tableView reloadData];
-        }];
-        
+        self->_belloh = [[Belloh alloc] init];
         self->_belloh.delegate = self;
+        __weak __typeof(self)weakSelf = self;
+        self->_belloh.completionHandler = ^{
+            [weakSelf.tableView reloadData];
+        };
+        
+        self.locationManager = [[CLLocationManager alloc] init];
+        self.locationManager.delegate = self;
+        [self.locationManager startUpdatingLocation];
     }
     return self;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    [manager stopUpdatingLocation];
+    
+    if (self->_belloh.region.span.latitudeDelta == 0) {
+        CLLocation *location = [locations lastObject];
+        MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
+        self->_belloh.region = MKCoordinateRegionMake(location.coordinate, span);        
+        [self.belloh BL_loadPosts];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [self BL_setNavBarTitleToLocationName];
+    }
 }
 
 - (void)viewDidLoad
@@ -47,10 +63,6 @@
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
 
     [self.tableView layoutIfNeeded];
-    
-    [self.belloh BL_loadPosts];
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [self BL_setNavBarTitleToLocationName];
     self.tableView.editing = YES;
     
     self.refreshControl = [[UIRefreshControl alloc] init];

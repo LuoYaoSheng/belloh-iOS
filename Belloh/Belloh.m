@@ -13,6 +13,7 @@
 @private
     NSMutableArray *_posts;
     BOOL _noRemainingPosts;
+    NSString *_loadUUID;
     
 }
 
@@ -161,6 +162,9 @@
     static NSString *postsURLString = @"http://www.belloh.com/posts";
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSString *UUID = [[NSUUID UUID] UUIDString];
+        self->_loadUUID = UUID;
+
         NSString *queryURLString = [NSString stringWithFormat:@"%@?%@",postsURLString,query];
         
         if (self.tag) {
@@ -175,6 +179,9 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            if (![UUID isEqualToString:self->_loadUUID]) {
+                return;
+            }
             
             NSError *error = nil;
             NSArray *postsArray = [NSJSONSerialization JSONObjectWithData:postsData options:0 error:&error];
