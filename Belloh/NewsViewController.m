@@ -17,6 +17,7 @@
 @property (nonatomic) UIRefreshControl *refreshControl;
 @property (nonatomic) NSURL *selectedURL;
 @property (nonatomic) CLLocationManager *locationManager;
+@property (nonatomic) NSTimer *timer;
 
 @end
 
@@ -25,12 +26,12 @@
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super initWithCoder:aDecoder]) {
-        self->_geocoder = [[CLGeocoder alloc] init];
+        self.geocoder = [[CLGeocoder alloc] init];
 
-        self->_belloh = [[Belloh alloc] init];
-        self->_belloh.delegate = self;
+        self.belloh = [[Belloh alloc] init];
+        self.belloh.delegate = self;
         __weak __typeof(self)weakSelf = self;
-        self->_belloh.completionHandler = ^{
+        self.belloh.completionHandler = ^{
             [weakSelf.tableView reloadData];
         };
         
@@ -45,14 +46,13 @@
 {
     [manager stopUpdatingLocation];
     
-    if (self->_belloh.region.span.latitudeDelta == 0) {
-        CLLocation *location = [locations lastObject];
-        MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
-        self->_belloh.region = MKCoordinateRegionMake(location.coordinate, span);        
-        [self.belloh BL_loadPosts];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        [self BL_setNavBarTitleToLocationName];
-    }
+    CLLocation *location = [locations lastObject];
+    MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
+    self.belloh.region = MKCoordinateRegionMake(location.coordinate, span);
+    [self.belloh BL_loadPosts];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [self BL_setNavBarTitleToLocationName];
+    manager.delegate = nil;
 }
 
 - (void)viewDidLoad
@@ -107,6 +107,20 @@
 - (void)handleRefresh
 {
     [self.belloh BL_loadPosts];
+}
+
+- (void)updateEllipsis:(NSTimer *)timer
+{
+    NSString *title = self.navigationItem.title;
+    if ([title length] >= 5) {
+        self.navigationItem.title = nil;
+    }
+    else if ([title length] == 0) {
+        self.navigationItem.title = @".";
+    }
+    else {
+        self.navigationItem.title = [title stringByAppendingString:@" ."];
+    }
 }
 
 - (void)loadingPostsFinished
@@ -286,7 +300,12 @@
     CLLocationCoordinate2D center = self.belloh.region.center;
     CLLocation *location = [[CLLocation alloc] initWithLatitude:center.latitude longitude:center.longitude];
     
+    self.navigationItem.title = nil;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateEllipsis:) userInfo:nil repeats:YES];
+
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        [self.timer invalidate];
+        
         if (error) {
             return BLLOG(@"geocoding: %@", error);
         }
