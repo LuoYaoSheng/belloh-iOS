@@ -181,17 +181,20 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
 
 - (void)BL_loadPosts
 {
-    [self->_posts removeAllObjects];
     NSString *postFilter = self.filter;
     self.filter = nil;
     // First load posts then load filtered results.
     
-    [self _BL_loadPostsForRegion:self.region completion:^{
+    [self _BL_loadPostsForRegion:self.region completion:^(NSArray *posts){
+        [self->_posts removeAllObjects];
+        for (NSDictionary *dict in posts) {
+            [self _BL_insertPostWithDictionary:dict atIndex:-1];
+        }
         self.filter = postFilter;
     }];
 }
 
-- (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region completion:(void (^)(void))completion
+- (void)_BL_loadPostsForRegion:(MKCoordinateRegion)region completion:(void (^)(NSArray *))completion
 {
     [self _BL_loadPostsForQuery:[Belloh _BL_queryForRegion:region] completion:completion];
 }
@@ -213,10 +216,14 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
 
 - (void)_BL_loadPostsForQuery:(NSString *)query
 {
-    [self _BL_loadPostsForQuery:query completion:nil];
+    [self _BL_loadPostsForQuery:query completion:^(NSArray *posts){
+        for (NSDictionary *dict in posts) {
+            [self _BL_insertPostWithDictionary:dict atIndex:-1];
+        }
+    }];
 }
 
-- (void)_BL_loadPostsForQuery:(NSString *)query completion:(void (^)(void))completion
+- (void)_BL_loadPostsForQuery:(NSString *)query completion:(void (^)(NSArray *))completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     
@@ -257,12 +264,8 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
                 self->_remainingPosts &= ~num;
             }
             
-            for (NSDictionary *dict in postsArray) {
-                [self _BL_insertPostWithDictionary:dict atIndex:-1];
-            }
-            
             if (completion) {
-                completion();
+                completion(postsArray);
             }
             
             if ([self.delegate respondsToSelector:@selector(loadingPostsFinished)]) {

@@ -7,6 +7,7 @@
 //
 
 #import "CreateViewController.h"
+#import "UIColor+App.h"
 
 @interface CreateViewController ()
 
@@ -27,22 +28,29 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+    if ([self.navBar respondsToSelector:@selector(barTintColor)]) {
+        // iOS7
+        self.navBar.barTintColor = [UIColor mainColor];
+    }
+    else {
+        // older
+        self.navBar.tintColor = [UIColor mainColor];
+    }
+    
     UITapGestureRecognizer *recog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
     recog.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:recog];
     
-    [[UITextField appearance] setTintColor:[UIColor darkTextColor]];
-    self.signatureField.tintColor = [UIColor darkTextColor];
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.signatureField.text = [defaults objectForKey:@"signature"];
     
-    //To make the border look very close to a UITextField
-    [self.messageView.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.3] CGColor]];
-    [self.messageView.layer setBorderWidth:1.0];
+    self.messageView.layer.borderColor = [[UIColor grayColor] colorWithAlphaComponent:0.3].CGColor;
+    self.messageView.layer.borderWidth = 1.0;
+    self.signatureField.superview.layer.borderColor = [[UIColor grayColor] colorWithAlphaComponent:0.3].CGColor;
+    self.signatureField.superview.layer.borderWidth = 1.0;
     
-    //The rounded corner part, where you specify your view's corner radius:
     self.messageView.layer.cornerRadius = 5.f;
+    self.signatureField.superview.layer.cornerRadius = 5.f;
     self.messageView.clipsToBounds = YES;
     self.messageView.placeholder = @"Say something...";
     self.postButton.layer.cornerRadius = 5;

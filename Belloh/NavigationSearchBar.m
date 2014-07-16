@@ -7,6 +7,7 @@
 //
 
 #import "NavigationSearchBar.h"
+#import "UIColor+App.h"
 
 @interface NavigationSearchBar ()
 
@@ -30,9 +31,19 @@
         
         self.rightButton = item.rightBarButtonItem;
         
-        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(-5.0, 0.0, 320.0, 44.0)];
+        self.searchBar = [[UISearchBar alloc] init];
         self.searchBar.placeholder = @"Filter posts";
         self.searchBar.delegate = self;
+        self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
+        
+        if ([self.searchBar respondsToSelector:@selector(barTintColor)]) {
+            // iOS7
+            self.searchBar.barTintColor = [UIColor mainColor];
+        }
+        else {
+            // older
+            self.searchBar.tintColor = [UIColor mainColor];
+        }
         
         self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(_searchCancelled)];
     }
@@ -45,8 +56,8 @@
 {
     UINavigationItem *item = self.topItem;
     item.rightBarButtonItem = nil;
-
     item.titleView = self.searchBar;
+    self.searchBar.frame = CGRectMake(-5.0, 0.0, 320.0, CGRectGetHeight(self.bounds));
     [item.titleView becomeFirstResponder];
     [item setLeftBarButtonItem:self.cancelButton animated:YES];
 }

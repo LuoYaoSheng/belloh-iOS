@@ -33,13 +33,11 @@
 //
 
     UITextView *theContent = [[UITextView alloc] init];
-    [theContent setSelectable:YES];
-    [theContent setScrollEnabled:NO];
-    [theContent setEditable:NO];
     [theContent setFont:self.messageView.font];
     [theContent setTextColor:self.messageView.textColor];
-    [theContent setBackgroundColor:self.messageView.backgroundColor];
-    [theContent setTintColor:self.messageView.tintColor];
+    if ([theContent respondsToSelector:@selector(setTintColor:)]) {
+        [theContent setTintColor:self.messageView.tintColor];
+    }
     [theContent setDataDetectorTypes:UIDataDetectorTypeLink];
     [theContent setText:content.message];
     

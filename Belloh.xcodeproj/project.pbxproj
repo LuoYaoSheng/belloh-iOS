@@ -17,6 +17,8 @@
 		253D650E189361F300DC60B5 /* Belloh.m in Sources */ = {isa = PBXBuildFile; fileRef = 253D650B189361F300DC60B5 /* Belloh.m */; };
 		253D650F189361F300DC60B5 /* BLPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 253D650D189361F300DC60B5 /* BLPost.m */; };
 		253D65131893A3DA00DC60B5 /* ios_draft_belloh_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 253D65121893A3DA00DC60B5 /* ios_draft_belloh_small.png */; };
+		25593FAE1976ECA4007C0E04 /* UIColor+App.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FAD1976ECA4007C0E04 /* UIColor+App.m */; };
+		25593FB11976F521007C0E04 /* App.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FB01976F521007C0E04 /* App.m */; };
 		2579F30B197476ED00AF1BF9 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2579F30A197476ED00AF1BF9 /* WebViewController.m */; };
 		2579F30E19749B8A00AF1BF9 /* PlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2579F30D19749B8A00AF1BF9 /* PlaceholderTextView.m */; };
 		25C33239186248B000DA8271 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C33238186248B000DA8271 /* Foundation.framework */; };
@@ -53,6 +55,7 @@
 		25C66A011975E679003C240B /* NSValue+MKCoordinateRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C66A001975E679003C240B /* NSValue+MKCoordinateRegion.m */; };
 		25C66A041975EBAD003C240B /* NSData+NSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C66A031975EBAD003C240B /* NSData+NSValue.m */; };
 		25C66A061975F965003C240B /* equalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C66A051975F965003C240B /* equalities.m */; };
+		25E089271976D9E8000D05BD /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 25E089261976D9E8000D05BD /* placeholder.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +85,10 @@
 		253D650C189361F300DC60B5 /* BLPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BLPost.h; sourceTree = "<group>"; };
 		253D650D189361F300DC60B5 /* BLPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BLPost.m; sourceTree = "<group>"; };
 		253D65121893A3DA00DC60B5 /* ios_draft_belloh_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ios_draft_belloh_small.png; sourceTree = SOURCE_ROOT; };
+		25593FAC1976ECA4007C0E04 /* UIColor+App.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+App.h"; sourceTree = "<group>"; };
+		25593FAD1976ECA4007C0E04 /* UIColor+App.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+App.m"; sourceTree = "<group>"; };
+		25593FAF1976F521007C0E04 /* App.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
+		25593FB01976F521007C0E04 /* App.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = App.m; sourceTree = "<group>"; };
 		2579F309197476ED00AF1BF9 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		2579F30A197476ED00AF1BF9 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		2579F30C19749B8A00AF1BF9 /* PlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderTextView.h; sourceTree = "<group>"; };
@@ -147,6 +154,7 @@
 		25C66A031975EBAD003C240B /* NSData+NSValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+NSValue.m"; path = "Belloh/NSData+NSValue.m"; sourceTree = "<group>"; };
 		25C66A051975F965003C240B /* equalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = equalities.m; sourceTree = "<group>"; };
 		25C66A071975F976003C240B /* equalities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = equalities.h; sourceTree = "<group>"; };
+		25E089261976D9E8000D05BD /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +185,7 @@
 		25C3322C186248B000DA8271 = {
 			isa = PBXGroup;
 			children = (
+				25E089251976D9E8000D05BD /* assets */,
 				25C669FE1975E653003C240B /* Categories */,
 				25C669E11975D91B003C240B /* AFNetworking */,
 				25C669C71975D623003C240B /* UIKit+AFNetworking */,
@@ -250,6 +259,8 @@
 				25C33246186248B000DA8271 /* Belloh-Prefix.pch */,
 				25C66A071975F976003C240B /* equalities.h */,
 				25C66A051975F965003C240B /* equalities.m */,
+				25593FAF1976F521007C0E04 /* App.h */,
+				25593FB01976F521007C0E04 /* App.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -329,8 +340,18 @@
 				25C66A001975E679003C240B /* NSValue+MKCoordinateRegion.m */,
 				25C66A021975EBAD003C240B /* NSData+NSValue.h */,
 				25C66A031975EBAD003C240B /* NSData+NSValue.m */,
+				25593FAC1976ECA4007C0E04 /* UIColor+App.h */,
+				25593FAD1976ECA4007C0E04 /* UIColor+App.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		25E089251976D9E8000D05BD /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				25E089261976D9E8000D05BD /* placeholder.png */,
+			);
+			path = assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,6 +437,7 @@
 				25C332B71863AB6500DA8271 /* orange.png in Resources */,
 				25C33243186248B000DA8271 /* InfoPlist.strings in Resources */,
 				25C3324C186248B000DA8271 /* Main.storyboard in Resources */,
+				25E089271976D9E8000D05BD /* placeholder.png in Resources */,
 				253D65131893A3DA00DC60B5 /* ios_draft_belloh_small.png in Resources */,
 				2526228418941ED00097828E /* ios_draft_belloh_small.pxm in Resources */,
 			);
@@ -436,6 +458,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25593FB11976F521007C0E04 /* App.m in Sources */,
 				25C33249186248B000DA8271 /* AppDelegate.m in Sources */,
 				2579F30B197476ED00AF1BF9 /* WebViewController.m in Sources */,
 				25C669DB1975D623003C240B /* UIAlertView+AFNetworking.m in Sources */,
@@ -453,6 +476,7 @@
 				250CD3241868F01E00C66E99 /* NewsViewController.m in Sources */,
 				25C669D91975D623003C240B /* AFNetworkActivityIndicatorManager.m in Sources */,
 				25C669F61975D91B003C240B /* AFHTTPRequestOperationManager.m in Sources */,
+				25593FAE1976ECA4007C0E04 /* UIColor+App.m in Sources */,
 				25C66A011975E679003C240B /* NSValue+MKCoordinateRegion.m in Sources */,
 				2579F30E19749B8A00AF1BF9 /* PlaceholderTextView.m in Sources */,
 				25C669F51975D91B003C240B /* AFHTTPRequestOperation.m in Sources */,
@@ -600,7 +624,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Belloh/Belloh-Prefix.pch";
 				INFOPLIST_FILE = "Belloh/Belloh-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -624,7 +648,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Belloh/Belloh-Prefix.pch";
 				INFOPLIST_FILE = "Belloh/Belloh-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

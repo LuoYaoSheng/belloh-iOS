@@ -13,6 +13,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "NSValue+MKCoordinateRegion.h"
 #import "NSData+NSValue.h"
+#import "UIColor+App.h"
 
 @interface NewsViewController ()
 
@@ -51,8 +52,15 @@
             self.locationManager.delegate = self;
             [self.locationManager startUpdatingLocation];
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(openURL:) name:@"openURL" object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
@@ -73,11 +81,19 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
-
+    if ([self.navigationController.navigationBar respondsToSelector:@selector(barTintColor)]) {
+        // iOS7
+        self.navigationController.navigationBar.barTintColor = [UIColor mainColor];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
+    }
+    else {
+        // older
+        self.navigationController.navigationBar.tintColor = [UIColor mainColor];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:nil action:nil];
+    }
+    
     [self.tableView layoutIfNeeded];
     self.tableView.editing = YES;
-    self.tableView.estimatedRowHeight = 75.f;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
@@ -146,6 +162,16 @@
 
 #pragma mark - UITextView delegate
 
+- (void)openURL:(NSNotification *)notification
+{
+    NSURL *URL = notification.userInfo[@"URL"];
+    if ([URL.scheme isEqual:@"http"] || [URL.scheme isEqual:@"https"]) {
+        self.selectedURL = URL;
+        [self performSegueWithIdentifier:@"showLink" sender:nil];
+    }
+}
+
+/*
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
 {
     if ([URL.scheme isEqual:@"http"] || [URL.scheme isEqual:@"https"]) {
@@ -155,6 +181,7 @@
     }
     return YES;
 }
+*/
 
 #pragma mark - UITableView dataSource
 
@@ -174,11 +201,16 @@
     
     if (post.hasThumbnail) {
         cell = [tableView dequeueReusableCellWithIdentifier:ThumbCellIdentifier forIndexPath:indexPath];
-        cell.thumbnailImageView.image = nil;
+        
+        static UIImage *placeholder;
+        if (placeholder == nil) {
+            placeholder = [UIImage imageNamed:@"placeholder.png"];
+        }
         
         NSURL *imageURL = [NSURL URLWithString:post.thumbnail];
         NSURLRequest *request = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLCacheStorageAllowed timeoutInterval:30.0];
-        [cell.thumbnailImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
+        
+        [cell.thumbnailImageView setImageWithURLRequest:request placeholderImage:placeholder success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
             if (response) {
             // TODO: might need a better way to do this.
                 NewsTableViewCell *currentCell = (NewsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -193,7 +225,7 @@
         cell = [tableView dequeueReusableCellWithIdentifier:NoThumbCellIdentifier forIndexPath:indexPath];
     }
     
-    //cell.messageView.backgroundColor = [UIColor blueColor];
+    //cell.messageView.backgroundColor = [UIColor yellowColor];
     cell.messageView.delegate = self;
     [cell setContent:post];
     
@@ -233,28 +265,43 @@
     return NO;
 }
 
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BLPost *post = [self.belloh BL_postAtIndex:indexPath.row];
     NSString *text = post.message;
-    CGFloat width = CGRectGetWidth(tableView.bounds) - 40.f;
+    
+    BOOL isOSAtLeast7 = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0");
+    
+    CGFloat width = CGRectGetWidth(tableView.bounds) - 48.f;
+
     if (post.hasThumbnail) {
-        width -= 60.0f;
+        width -= 62.f;
     }
     
     UIFont *font = [UIFont fontWithName:@"Thonburi" size:18.f];
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName: font}];
+    CGSize size = (CGSize){width, CGFLOAT_MAX};
     
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){width - 10.f, CGFLOAT_MAX}
-                                                    options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                                    context:nil];
-    CGFloat height = 50.f;
-    
-    if ([attributedText length]) {
-        height += floorf(rect.size.height);
+    if (isOSAtLeast7) {
+        size.width -= 2.f;
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName: font}];
+        
+        size = [attributedText boundingRectWithSize:size
+                                                   options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                                   context:nil].size;
     }
     else {
-        height += floorf(rect.size.height + font.lineHeight);
+        size = [text sizeWithFont:font constrainedToSize:size];
+    }
+
+    CGFloat height = 55.f;
+    
+    if ([text length]) {
+        height += floorf(size.height);
+    }
+    else {
+        height += floorf(size.height + font.lineHeight);
     }
     
     if (post.hasThumbnail && height < 75.f) {
@@ -353,6 +400,7 @@
         [self.timer invalidate];
         
         if (error) {
+            self.navigationItem.title = @"News";
             return BLLOG(@"geocoding: %@", error);
         }
         
