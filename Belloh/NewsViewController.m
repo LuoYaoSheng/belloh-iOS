@@ -174,12 +174,13 @@
     
     if (post.hasThumbnail) {
         cell = [tableView dequeueReusableCellWithIdentifier:ThumbCellIdentifier forIndexPath:indexPath];
+        cell.thumbnailImageView.image = nil;
         
         NSURL *imageURL = [NSURL URLWithString:post.thumbnail];
         NSURLRequest *request = [NSURLRequest requestWithURL:imageURL cachePolicy:NSURLCacheStorageAllowed timeoutInterval:30.0];
         [cell.thumbnailImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image){
             if (response) {
-            // TODO: might need better way to do this.
+            // TODO: might need a better way to do this.
                 NewsTableViewCell *currentCell = (NewsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
                 currentCell.thumbnailImageView.image = image;
             }
