@@ -52,6 +52,7 @@
 		25C669FD1975D91B003C240B /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C669F41975D91B003C240B /* AFURLSessionManager.m */; };
 		25C66A011975E679003C240B /* NSValue+MKCoordinateRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C66A001975E679003C240B /* NSValue+MKCoordinateRegion.m */; };
 		25C66A041975EBAD003C240B /* NSData+NSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C66A031975EBAD003C240B /* NSData+NSValue.m */; };
+		25C66A061975F965003C240B /* equalities.m in Sources */ = {isa = PBXBuildFile; fileRef = 25C66A051975F965003C240B /* equalities.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +145,8 @@
 		25C66A001975E679003C240B /* NSValue+MKCoordinateRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSValue+MKCoordinateRegion.m"; path = "Belloh/NSValue+MKCoordinateRegion.m"; sourceTree = "<group>"; };
 		25C66A021975EBAD003C240B /* NSData+NSValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+NSValue.h"; path = "Belloh/NSData+NSValue.h"; sourceTree = "<group>"; };
 		25C66A031975EBAD003C240B /* NSData+NSValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+NSValue.m"; path = "Belloh/NSData+NSValue.m"; sourceTree = "<group>"; };
+		25C66A051975F965003C240B /* equalities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = equalities.m; sourceTree = "<group>"; };
+		25C66A071975F976003C240B /* equalities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = equalities.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +248,8 @@
 				25C33241186248B000DA8271 /* InfoPlist.strings */,
 				25C33244186248B000DA8271 /* main.m */,
 				25C33246186248B000DA8271 /* Belloh-Prefix.pch */,
+				25C66A071975F976003C240B /* equalities.h */,
+				25C66A051975F965003C240B /* equalities.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -444,6 +449,7 @@
 				250CD3231868F01E00C66E99 /* MapViewController.m in Sources */,
 				25C33245186248B000DA8271 /* main.m in Sources */,
 				25C669DE1975D623003C240B /* UIProgressView+AFNetworking.m in Sources */,
+				25C66A061975F965003C240B /* equalities.m in Sources */,
 				250CD3241868F01E00C66E99 /* NewsViewController.m in Sources */,
 				25C669D91975D623003C240B /* AFNetworkActivityIndicatorManager.m in Sources */,
 				25C669F61975D91B003C240B /* AFHTTPRequestOperationManager.m in Sources */,

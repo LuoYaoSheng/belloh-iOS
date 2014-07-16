@@ -267,6 +267,12 @@
 - (void)mapViewControllerDidFinish:(MapViewController *)controller
 {
     MKCoordinateRegion region = [controller.mapView region];
+    
+    if (MKCoordinateRegionEqualToRegion(region, self.belloh.region)) {
+        BLLOG(@"same");
+        return;
+    }
+    
     self.belloh.region = region;
     
     // Save the region

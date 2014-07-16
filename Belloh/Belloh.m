@@ -126,25 +126,29 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
     CGFloat lon = region.center.longitude;
     CGFloat deltaLat = region.span.latitudeDelta/2;
     CGFloat deltaLon = region.span.longitudeDelta/2;
-    return [NSString stringWithFormat:@"box%%5B0%%5D%%5B%%5D=%f&box%%5B0%%5D%%5B%%5D=%f&box%%5B1%%5D%%5B%%5D=%f&box%%5B1%%5D%%5B%%5D=%f",lat-deltaLat,lon-deltaLon,lat+deltaLat,lon+deltaLon];
+    static NSString *format = @"box%%5B0%%5D%%5B%%5D=%f&box%%5B0%%5D%%5B%%5D=%f&box%%5B1%%5D%%5B%%5D=%f&box%%5B1%%5D%%5B%%5D=%f";
+    return [NSString stringWithFormat:format,lat-deltaLat,lon-deltaLon,lat+deltaLat,lon+deltaLon];
 }
 
 + (NSString *)_BL_queryForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId
 {
     NSString *regionQuery = [Belloh _BL_queryForRegion:region];
-    return [NSString stringWithFormat:@"%@&elder_id=%@", regionQuery, postId];
+    static NSString *format = @"%@&elder_id=%@";
+    return [NSString stringWithFormat:format, regionQuery, postId];
 }
 
 + (NSString *)_BL_queryForRegion:(MKCoordinateRegion)region filter:(NSString *)filter
 {
     NSString *regionQuery = [Belloh _BL_queryForRegion:region];
-    return [NSString stringWithFormat:@"%@&filter=%@", regionQuery, filter];
+    static NSString *format = @"%@&filter=%@";
+    return [NSString stringWithFormat:format, regionQuery, filter];
 }
 
 + (NSString *)_BL_queryForRegion:(MKCoordinateRegion)region lastPostId:(NSString *)postId filter:(NSString *)filter
 {
     NSString *regionAndLastPostIdQuery = [Belloh _BL_queryForRegion:region lastPostId:postId];
-    return [NSString stringWithFormat:@"%@&filter=%@", regionAndLastPostIdQuery, filter];
+    static NSString *format = @"%@&filter=%@";
+    return [NSString stringWithFormat:format, regionAndLastPostIdQuery, filter];
 }
 
 #pragma mark - Belloh Posts Loading
