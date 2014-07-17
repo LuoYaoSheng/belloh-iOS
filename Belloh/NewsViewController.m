@@ -9,6 +9,7 @@
 #import "NewsViewController.h"
 #import "NewsTableViewCell.h"
 #import "WebViewController.h"
+#import "NavigationSearchBar.h"
 
 #import "UIImageView+AFNetworking.h"
 #import "NSValue+MKCoordinateRegion.h"
@@ -76,6 +77,22 @@
     manager.delegate = nil;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES animated:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NavigationSearchBar *navBar = (NavigationSearchBar *)self.navigationController.navigationBar;
+    navBar.leftSide = NO;
+    navBar.searchBar.text = nil;
+    navBar.searchBar.placeholder = @"Filter posts";
+    navBar.searchBar.delegate = self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -84,11 +101,15 @@
     if ([self.navigationController.navigationBar respondsToSelector:@selector(barTintColor)]) {
         // iOS7
         self.navigationController.navigationBar.barTintColor = [UIColor mainColor];
+        self.navigationController.toolbar.barTintColor = [UIColor mainColor];
+
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
     }
     else {
         // older
         self.navigationController.navigationBar.tintColor = [UIColor mainColor];
+        self.navigationController.toolbar.tintColor = [UIColor mainColor];
+
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleDone target:nil action:nil];
     }
     
@@ -98,9 +119,7 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
     [self setRefreshControl:self.refreshControl];
-    
-    [(NavigationSearchBar *)self.navigationController.navigationBar setMyDelegate:self];
-    
+        
     UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showMap)];
     leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.view addGestureRecognizer:leftSwipe];
@@ -421,16 +440,9 @@
     }];
 }
 
-#pragma mark - Navigation Search Bar Delegate
+#pragma mark - UISearchBarDelegate methods
 
-- (void)searchInitiated:(NSString *)searchQuery
-{
-    self.previousVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
-    self.belloh.filter = searchQuery;
-    BLLOG(@"Filter: %@", searchQuery);
-}
-
-- (void)searchCancelled
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     if (self.belloh.filter) {
         self.belloh.filter = nil;
@@ -444,6 +456,14 @@
             self.previousVisibleIndexPath = nil;
         }
     }
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    self.previousVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] firstObject];
+    self.belloh.filter = searchBar.text;
+    BLLOG(@"Filter: %@", searchBar.text);
+    [searchBar endEditing:YES];
 }
 
 @end

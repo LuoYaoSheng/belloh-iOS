@@ -6,16 +6,11 @@
 //  Copyright (c) 2013 Eric Webster. All rights reserved.
 //
 
-@protocol NavigationSearchBarDelegate <NSObject>
+@interface NavigationSearchBar : UINavigationBar
 
-@optional
-- (void)searchInitiated:(NSString *)searchQuery;
-- (void)searchCancelled;
+@property (nonatomic, assign) BOOL leftSide;
+@property (nonatomic) UISearchBar *searchBar;
 
-@end
-
-@interface NavigationSearchBar : UINavigationBar<UISearchBarDelegate>
-
-@property (weak, nonatomic) id<NavigationSearchBarDelegate> myDelegate;
+- (IBAction)hideSearchBar:(id)sender;
 
 @end

@@ -8,6 +8,7 @@
 
 #import "CreateViewController.h"
 #import "UIColor+App.h"
+#import "UIView+Keyboard.h"
 
 @interface CreateViewController ()
 
@@ -37,7 +38,7 @@
         self.navBar.tintColor = [UIColor mainColor];
     }
     
-    UITapGestureRecognizer *recog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard:)];
+    UITapGestureRecognizer *recog = [[UITapGestureRecognizer alloc] initWithTarget:self.view action:@selector(hideKeyboard:)];
     recog.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:recog];
     
@@ -94,11 +95,6 @@
     if ([self.delegate respondsToSelector:@selector(createViewControllerDidCancel)]) {
         [self.delegate createViewControllerDidCancel];
     }
-}
-
-- (IBAction)hideKeyboard:(id)sender
-{
-    [self.view endEditing:YES];
 }
 
 @end

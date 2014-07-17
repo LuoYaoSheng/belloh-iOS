@@ -7,6 +7,7 @@
 //
 
 #import <MapKit/MapKit.h>
+#import "BookmarksViewController.h"
 
 @class MapViewController;
 
@@ -18,12 +19,12 @@
 
 @end
 
-@interface MapViewController : UIViewController<CLLocationManagerDelegate,UISearchDisplayDelegate,UISearchBarDelegate>
+@interface MapViewController : UIViewController<CLLocationManagerDelegate,UISearchDisplayDelegate,UISearchBarDelegate,BookmarksViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
 
 @property (weak, nonatomic) id<MapViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
-@property (weak, nonatomic) IBOutlet UIButton *findMeButton;
 
 - (IBAction)findMe:(id)sender;
+- (IBAction)addBookmark:(id)sender;
 
 @end

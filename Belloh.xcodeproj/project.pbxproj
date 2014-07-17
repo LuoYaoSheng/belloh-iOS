@@ -20,6 +20,9 @@
 		25593FAE1976ECA4007C0E04 /* UIColor+App.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FAD1976ECA4007C0E04 /* UIColor+App.m */; };
 		25593FB11976F521007C0E04 /* App.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FB01976F521007C0E04 /* App.m */; };
 		25593FB419773A7A007C0E04 /* NSObject+Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FB319773A7A007C0E04 /* NSObject+Classes.m */; };
+		25593FB7197764A7007C0E04 /* BookmarksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FB6197764A7007C0E04 /* BookmarksViewController.m */; };
+		25593FB919777599007C0E04 /* locate_me.png in Resources */ = {isa = PBXBuildFile; fileRef = 25593FB819777599007C0E04 /* locate_me.png */; };
+		25593FBC1977916C007C0E04 /* UIView+Keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FBB1977916C007C0E04 /* UIView+Keyboard.m */; };
 		2579F30B197476ED00AF1BF9 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2579F30A197476ED00AF1BF9 /* WebViewController.m */; };
 		2579F30E19749B8A00AF1BF9 /* PlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2579F30D19749B8A00AF1BF9 /* PlaceholderTextView.m */; };
 		25C33239186248B000DA8271 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C33238186248B000DA8271 /* Foundation.framework */; };
@@ -92,6 +95,11 @@
 		25593FB01976F521007C0E04 /* App.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = App.m; sourceTree = "<group>"; };
 		25593FB219773A7A007C0E04 /* NSObject+Classes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Classes.h"; path = "Belloh/NSObject+Classes.h"; sourceTree = "<group>"; };
 		25593FB319773A7A007C0E04 /* NSObject+Classes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Classes.m"; path = "Belloh/NSObject+Classes.m"; sourceTree = "<group>"; };
+		25593FB5197764A7007C0E04 /* BookmarksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarksViewController.h; sourceTree = "<group>"; };
+		25593FB6197764A7007C0E04 /* BookmarksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarksViewController.m; sourceTree = "<group>"; };
+		25593FB819777599007C0E04 /* locate_me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = locate_me.png; sourceTree = "<group>"; };
+		25593FBA1977916C007C0E04 /* UIView+Keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Keyboard.h"; path = "Belloh/UIView+Keyboard.h"; sourceTree = "<group>"; };
+		25593FBB1977916C007C0E04 /* UIView+Keyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Keyboard.m"; path = "Belloh/UIView+Keyboard.m"; sourceTree = "<group>"; };
 		2579F309197476ED00AF1BF9 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		2579F30A197476ED00AF1BF9 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		2579F30C19749B8A00AF1BF9 /* PlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderTextView.h; sourceTree = "<group>"; };
@@ -227,6 +235,8 @@
 				250CD3261868F22B00C66E99 /* NewsTableViewCell.m */,
 				250CD31F1868F01E00C66E99 /* MapViewController.h */,
 				250CD3201868F01E00C66E99 /* MapViewController.m */,
+				25593FB5197764A7007C0E04 /* BookmarksViewController.h */,
+				25593FB6197764A7007C0E04 /* BookmarksViewController.m */,
 				250CD3211868F01E00C66E99 /* NewsViewController.h */,
 				250CD3221868F01E00C66E99 /* NewsViewController.m */,
 				25058263186BA89F00C28EC4 /* CreateViewController.h */,
@@ -347,6 +357,8 @@
 				25C66A031975EBAD003C240B /* NSData+NSValue.m */,
 				25593FAC1976ECA4007C0E04 /* UIColor+App.h */,
 				25593FAD1976ECA4007C0E04 /* UIColor+App.m */,
+				25593FBA1977916C007C0E04 /* UIView+Keyboard.h */,
+				25593FBB1977916C007C0E04 /* UIView+Keyboard.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -354,6 +366,7 @@
 		25E089251976D9E8000D05BD /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				25593FB819777599007C0E04 /* locate_me.png */,
 				25E089261976D9E8000D05BD /* placeholder.png */,
 			);
 			path = assets;
@@ -439,6 +452,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25C33254186248B000DA8271 /* Images.xcassets in Resources */,
+				25593FB919777599007C0E04 /* locate_me.png in Resources */,
 				25C332B71863AB6500DA8271 /* orange.png in Resources */,
 				25C33243186248B000DA8271 /* InfoPlist.strings in Resources */,
 				25C3324C186248B000DA8271 /* Main.storyboard in Resources */,
@@ -468,6 +482,7 @@
 				2579F30B197476ED00AF1BF9 /* WebViewController.m in Sources */,
 				25C669DB1975D623003C240B /* UIAlertView+AFNetworking.m in Sources */,
 				253D650E189361F300DC60B5 /* Belloh.m in Sources */,
+				25593FBC1977916C007C0E04 /* UIView+Keyboard.m in Sources */,
 				25C669FA1975D91B003C240B /* AFURLConnectionOperation.m in Sources */,
 				25C669F91975D91B003C240B /* AFSecurityPolicy.m in Sources */,
 				25058268186CBC0100C28EC4 /* NavigationSearchBar.m in Sources */,
@@ -475,6 +490,7 @@
 				25058265186BA89F00C28EC4 /* CreateViewController.m in Sources */,
 				25C66A041975EBAD003C240B /* NSData+NSValue.m in Sources */,
 				250CD3231868F01E00C66E99 /* MapViewController.m in Sources */,
+				25593FB7197764A7007C0E04 /* BookmarksViewController.m in Sources */,
 				25C33245186248B000DA8271 /* main.m in Sources */,
 				25C669DE1975D623003C240B /* UIProgressView+AFNetworking.m in Sources */,
 				25C66A061975F965003C240B /* equalities.m in Sources */,

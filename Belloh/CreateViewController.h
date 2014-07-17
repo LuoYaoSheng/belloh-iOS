@@ -20,7 +20,7 @@
 
 @end
 
-@interface CreateViewController : UIViewController<UINavigationBarDelegate>
+@interface CreateViewController : UIViewController
 
 @property (nonatomic, weak) id<CreateViewControllerDelegate> delegate;
 @property (nonatomic, weak) IBOutlet PlaceholderTextView *messageView;
@@ -31,6 +31,5 @@
 
 - (IBAction)post:(id)sender;
 - (IBAction)cancel:(id)sender;
-- (IBAction)hideKeyboard:(id)sender;
 
 @end

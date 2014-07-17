@@ -10,6 +10,6 @@
 #import "CreateViewController.h"
 #import "NavigationSearchBar.h"
 
-@interface NewsViewController : UITableViewController<CreateViewControllerDelegate,MapViewControllerDelegate,NavigationSearchBarDelegate,BellohDelegate,UITextViewDelegate,CLLocationManagerDelegate>
+@interface NewsViewController : UITableViewController<CreateViewControllerDelegate,MapViewControllerDelegate,UISearchBarDelegate,BellohDelegate,UITextViewDelegate,CLLocationManagerDelegate>
 
 @end

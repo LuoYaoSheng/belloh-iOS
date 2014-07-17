@@ -11,10 +11,9 @@
 
 @interface NavigationSearchBar ()
 
-@property (nonatomic, strong) UIBarButtonItem *searchButton;
-@property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UIBarButtonItem *cancelButton;
-@property (nonatomic, strong) UIBarButtonItem *rightButton;
+@property (nonatomic) UIBarButtonItem *searchButton;
+@property (nonatomic) UIBarButtonItem *cancelButton;
+@property (nonatomic) UIBarButtonItem *removedButton;
 
 @end
 
@@ -22,32 +21,52 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        // Initialization code
-        UINavigationItem *item = self.topItem;
-        self.searchButton = item.leftBarButtonItem;
-        self.searchButton.action = @selector(_displaySearchBar);
-        
-        self.rightButton = item.rightBarButtonItem;
-        
+    if (self = [super initWithCoder:aDecoder]) {
         self.searchBar = [[UISearchBar alloc] init];
-        self.searchBar.placeholder = @"Filter posts";
-        self.searchBar.delegate = self;
         self.searchBar.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
         
         if ([self.searchBar respondsToSelector:@selector(barTintColor)]) {
             // iOS7
             self.searchBar.barTintColor = [UIColor mainColor];
+            self.searchBar.tintColor = [UIColor darkTextColor];
         }
         else {
             // older
             self.searchBar.tintColor = [UIColor mainColor];
         }
         
-        self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(_searchCancelled)];
+        self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(_searchCancelled)];
     }
     return self;
+}
+
+- (void)setLeftSide:(BOOL)leftSide
+{
+    if (leftSide) {
+        self.searchButton = self.topItem.rightBarButtonItem;
+    }
+    else {
+        self.searchButton = self.topItem.leftBarButtonItem;
+    }
+    self.searchButton.action = @selector(_displaySearchBar);
+    _leftSide = leftSide;
+}
+
+- (void)setPlaceholder:(NSString *)placeholder
+{
+    self.searchBar.placeholder = placeholder;
+}
+
+- (NSString *)placeholder
+{
+    return self.searchBar.placeholder;
+}
+
+#pragma mark - IBActions
+
+- (IBAction)hideSearchBar:(id)sender
+{
+    [self _searchCancelled];
 }
 
 #pragma mark - Search Bar
@@ -55,29 +74,42 @@
 - (void)_displaySearchBar
 {
     UINavigationItem *item = self.topItem;
-    item.rightBarButtonItem = nil;
-    item.titleView = self.searchBar;
-    self.searchBar.frame = CGRectMake(-5.0, 0.0, 320.0, CGRectGetHeight(self.bounds));
+    
+    if (self.leftSide) {
+        self.removedButton = item.leftBarButtonItem;
+        item.leftBarButtonItem = nil;
+        item.hidesBackButton = YES;
+        item.titleView = self.searchBar;
+        self.searchBar.frame = CGRectMake(-5.0, 0.0, 320.0, CGRectGetHeight(self.bounds));
+        [item setRightBarButtonItem:self.cancelButton animated:YES];
+    }
+    else {
+        self.removedButton = item.rightBarButtonItem;
+        item.rightBarButtonItem = nil;
+        item.titleView = self.searchBar;
+        self.searchBar.frame = CGRectMake(-5.0, 0.0, 320.0, CGRectGetHeight(self.bounds));
+        [item setLeftBarButtonItem:self.cancelButton animated:YES];
+    }
+    
     [item.titleView becomeFirstResponder];
-    [item setLeftBarButtonItem:self.cancelButton animated:YES];
 }
 
 - (void)_searchCancelled
-{
-    if ([self.myDelegate respondsToSelector:@selector(searchCancelled)]) {
-        [self.myDelegate searchCancelled];
-    }
+{    
     UINavigationItem *item = self.topItem;
-    item.rightBarButtonItem = self.rightButton;
     item.titleView = nil;
-    [item setLeftBarButtonItem:self.searchButton animated:YES];
-}
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    [searchBar resignFirstResponder];
-    if ([self.myDelegate respondsToSelector:@selector(searchInitiated:)]) {
-        [self.myDelegate searchInitiated:searchBar.text];
+    if (self.leftSide) {
+        [item setLeftBarButtonItem:self.removedButton animated:YES];
+        [item setRightBarButtonItem:self.searchButton animated:YES];
+    }
+    else {
+        [item setRightBarButtonItem:self.removedButton animated:YES];
+        [item setLeftBarButtonItem:self.searchButton animated:YES];
+    }
+    
+    if ([self.searchBar.delegate respondsToSelector:@selector(searchBarCancelButtonClicked:)]) {
+        [self.searchBar.delegate searchBarCancelButtonClicked:self.searchBar];
     }
 }
 
