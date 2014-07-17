@@ -89,8 +89,11 @@
 
 - (IBAction)addBookmark:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Name your bookmark" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] ;
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Bookmark this region" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] ;
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    UITextField *textField = [alertView textFieldAtIndex:0];
+    textField.placeholder = @"Bookmark name";
+    textField.textAlignment = NSTextAlignmentCenter;
     [alertView show];
 }
 

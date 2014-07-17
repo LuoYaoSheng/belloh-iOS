@@ -14,6 +14,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    NSDictionary *settings = @{UITextAttributeFont: [UIFont fontWithName:@"Thonburi" size:18.0],
+                               UITextAttributeTextShadowColor: [UIColor clearColor]};
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:settings];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:settings forState:UIControlStateNormal];
+    
     return YES;
 }
 							

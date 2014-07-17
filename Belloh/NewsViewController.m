@@ -184,7 +184,6 @@
 {
     [self.tableView reloadData];
     [self hideActivityIndicator];
-    //[self.activityIndicator stopAnimating];
     [self.refreshControl endRefreshing];
 }
 
@@ -366,6 +365,7 @@
     
     [self.belloh BL_removeAllPosts];
     [self.tableView reloadData];
+    [self showActivityIndicator];
     [self.belloh BL_loadPosts];
     [self BL_setNavBarTitleToLocationName];
 }

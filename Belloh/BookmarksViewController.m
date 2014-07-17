@@ -101,4 +101,18 @@
     [tableView endUpdates];
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    id bookmark = self.bookmarks[sourceIndexPath.row];
+    NSMutableArray *temp = [self.bookmarks mutableCopy];
+    [temp removeObjectAtIndex:sourceIndexPath.row];
+    [temp insertObject:bookmark atIndex:destinationIndexPath.row];
+    self.bookmarks = temp;
+}
+
 @end
