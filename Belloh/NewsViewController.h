@@ -12,4 +12,6 @@
 
 @interface NewsViewController : UITableViewController<CreateViewControllerDelegate,MapViewControllerDelegate,UISearchBarDelegate,BellohDelegate,UITextViewDelegate,CLLocationManagerDelegate>
 
+@property (nonatomic, weak) IBOutlet UIActivityIndicatorView *activityIndicator;
+
 @end

@@ -209,6 +209,22 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="YL7-Jc-5hs">
+                            <rect key="frame" x="0.0" y="164" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="icx-Bn-b2a">
+                                    <rect key="frame" x="0.0" y="12" width="320" height="20"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="icx-Bn-b2a" firstAttribute="leading" secondItem="YL7-Jc-5hs" secondAttribute="leading" id="EfN-IU-gFv"/>
+                                <constraint firstAttribute="trailing" secondItem="icx-Bn-b2a" secondAttribute="trailing" id="Rhs-TV-LrF"/>
+                                <constraint firstItem="icx-Bn-b2a" firstAttribute="centerY" secondItem="YL7-Jc-5hs" secondAttribute="centerY" id="cEi-9q-xHz"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ThumbCell" rowHeight="76" id="egk-Kk-Oy9" customClass="NewsTableViewCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="76"/>
@@ -316,6 +332,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="activityIndicator" destination="icx-Bn-b2a" id="0gQ-8A-OdY"/>
                         <segue destination="kIf-nA-PKG" kind="push" identifier="showMap" id="u4M-Z0-2Gb"/>
                         <segue destination="s3b-Su-HbO" kind="push" identifier="showLink" id="Qtp-MP-kfA"/>
                     </connections>

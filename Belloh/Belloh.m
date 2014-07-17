@@ -160,19 +160,25 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
     return [NSString stringWithFormat:format, regionAndLastPostIdQuery, filter];
 }
 
-#pragma mark - Belloh Posts Loading
-
-- (void)BL_loadAndAppendOlderPosts
+- (BOOL)BL_isRemainingPosts
 {
     BLLOG(@"%i, %i",self->_remainingPosts,self->_remainingPosts&BLNoPostsRemaining);
     
     if (self->_remainingPosts&BLNoPostsRemaining) {
-        return;
+        return NO;
+    }
+    else if (self.filter && self->_remainingPosts&BLNoFilteredResultsRemaining) {
+        return NO;
     }
     
-    NSString *postFilter = self.filter;
+    return YES;
+}
 
-    if (postFilter && self->_remainingPosts&BLNoFilteredResultsRemaining) {
+#pragma mark - Belloh Posts Loading
+
+- (void)BL_loadAndAppendOlderPosts
+{
+    if (![self BL_isRemainingPosts]) {
         return;
     }
     
@@ -180,8 +186,8 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
     BLPost *lastPost = [self BL_lastPost];
     NSString *lastPostId = lastPost.identifier;
     
-    if (postFilter) {
-        [self _BL_loadPostsForRegion:self.region lastPostId:lastPostId filter:postFilter];
+    if (self.filter) {
+        [self _BL_loadPostsForRegion:self.region lastPostId:lastPostId filter:self.filter];
     }
     else {
         [self _BL_loadPostsForRegion:self.region lastPostId:lastPostId];

@@ -38,5 +38,6 @@ typedef void (^BLCompletionHandler)(void);
 - (void)BL_loadPosts;
 - (void)BL_sendNewPost:(BLPost *)newPost completion:(void (^)(void))completion;
 - (void)BL_removeAllPosts;
+- (BOOL)BL_isRemainingPosts;
 
 @end

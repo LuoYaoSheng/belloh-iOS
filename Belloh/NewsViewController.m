@@ -45,7 +45,6 @@
             NSValue *region = [data valueWithObjCType:@encode(MKCoordinateRegion)];
             self.belloh.region = [region MKCoordinateRegionValue];
             [self.belloh BL_loadPosts];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             [self BL_setNavBarTitleToLocationName];
         }
         else {
@@ -72,7 +71,6 @@
     MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
     self.belloh.region = MKCoordinateRegionMake(location.coordinate, span);
     [self.belloh BL_loadPosts];
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [self BL_setNavBarTitleToLocationName];
     manager.delegate = nil;
 }
@@ -133,20 +131,6 @@
     [self performSegueWithIdentifier:@"showMap" sender:self];
 }
 
-- (IBAction)switchTag:(UIBarButtonItem *)sender
-{
-    if ([sender.title isEqualToString:@"All"]) {
-        self.belloh.tag = nil;
-    }
-    else if ([sender.title isEqualToString:@"Events and Deals"]) {
-        self.belloh.tag = @"EnD";
-    }
-    else {
-        self.belloh.tag = sender.title;
-    }
-    [self.belloh BL_loadPosts];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -172,10 +156,35 @@
     }
 }
 
+- (void)hideActivityIndicator
+{/*
+    UIView *footer = self.activityIndicator.superview;
+    CGRect frame = footer.frame;
+    frame.size.height = 0;
+    [UIView animateWithDuration:2 delay:0 options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
+        footer.frame = frame;
+    } completion:^(BOOL finished) {*/
+        [self.activityIndicator stopAnimating];
+    //}];
+}
+
+- (void)showActivityIndicator
+{/*
+    UIView *footer = self.activityIndicator.superview;
+    CGRect frame = footer.frame;
+    frame.size.height = 44.f;
+    [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
+        footer.frame = frame;
+    } completion:^(BOOL finished) {*/
+        [self.activityIndicator startAnimating];
+    //}];
+}
+
 - (void)loadingPostsFinished
 {
     [self.tableView reloadData];
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self hideActivityIndicator];
+    //[self.activityIndicator stopAnimating];
     [self.refreshControl endRefreshing];
 }
 
@@ -248,8 +257,14 @@
     cell.messageView.delegate = self;
     [cell setContent:post];
     
-    if (indexPath.row >= [self.belloh BL_postCount]-1) {
-        [self.belloh BL_loadAndAppendOlderPosts];
+    if (indexPath.row >= [self.belloh BL_postCount] - 1) {
+        if (self.belloh.BL_isRemainingPosts) {
+            [self showActivityIndicator];
+            [self.belloh BL_loadAndAppendOlderPosts];
+        }
+        else {
+            [self.activityIndicator stopAnimating];
+        }
     }
     
     return cell;
