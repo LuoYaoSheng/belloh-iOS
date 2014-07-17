@@ -7,11 +7,20 @@
 //
 
 #import "Belloh.h"
+#import "NSObject+Classes.h"
 
 enum {
+    // TODO: possible bug with BLNoPostsRemaining etc.. not loading older posts correctly.
     BLNoPostsRemaining = 1,
     BLNoFilteredResultsRemaining = 2
 };
+
+static NSString *const BLMessageKeyName = @"message";
+static NSString *const BLSignatureKeyName = @"signature";
+static NSString *const BLLatitudeKeyName = @"lat";
+static NSString *const BLLongitudeKeyName = @"lon";
+static NSString *const BLIdentifierKeyName = @"_id";
+static NSString *const BLThumbnailKeyName = @"thumb";
 
 @implementation Belloh {
 
@@ -169,7 +178,7 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
     
     BLLOG(@"loading more posts...");
     BLPost *lastPost = [self BL_lastPost];
-    NSString *lastPostId = lastPost.id;
+    NSString *lastPostId = lastPost.identifier;
     
     if (postFilter) {
         [self _BL_loadPostsForRegion:self.region lastPostId:lastPostId filter:postFilter];
@@ -278,16 +287,16 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
 - (void)_BL_insertPostWithDictionary:(NSDictionary *)postDictionary atIndex:(NSInteger)signedIndex
 {
     BLPost *post = [[BLPost alloc] init];
-    post.message = [postDictionary valueForKey:@"message"];
-    post.signature = [postDictionary valueForKey:@"signature"];
-    post.latitude = [[postDictionary objectForKey:@"lat"] floatValue];
-    post.longitude = [[postDictionary objectForKey:@"lng"] floatValue];
-    post.id = [postDictionary valueForKey:@"_id"];
-    [post setTimestampWithBSONId:post.id];
-    post.hasThumbnail = [[postDictionary objectForKey:@"thumb"] boolValue];
+    post.message = [NSString sanitize:postDictionary[BLMessageKeyName]];
+    post.signature = [NSString sanitize:postDictionary[BLSignatureKeyName]];
+    post.latitude = [[NSNumber sanitize:postDictionary[BLLatitudeKeyName]] floatValue];
+    post.longitude = [[NSNumber sanitize:postDictionary[BLLongitudeKeyName]] floatValue];
+    post.hasThumbnail = [[NSNumber sanitize:postDictionary[BLThumbnailKeyName]] boolValue];
+    post.identifier = [NSString sanitize:postDictionary[BLIdentifierKeyName]];
+    [post setTimestampWithBSONId:post.identifier];
     
     static NSString *thumbnailURLFormat = @"http://s3.amazonaws.com/belloh/thumbs/%@.jpg";
-    post.thumbnail = [NSString stringWithFormat:thumbnailURLFormat, post.id];;
+    post.thumbnail = [NSString stringWithFormat:thumbnailURLFormat, post.identifier];
     
     if (signedIndex == -1) {
         [self _BL_appendPost:post];
@@ -310,7 +319,7 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
     newPostRequest.HTTPMethod = @"POST";
     [newPostRequest setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     
-    NSDictionary *postDictionary = @{@"message": newPost.message, @"signature": newPost.signature, @"lat": @(newPost.latitude), @"lng": @(newPost.longitude)};
+    NSDictionary *postDictionary = @{BLMessageKeyName: newPost.message, BLSignatureKeyName: newPost.signature, BLLatitudeKeyName: @(newPost.latitude), BLLongitudeKeyName: @(newPost.longitude)};
     NSError *error = nil;
     NSData *postData = [NSJSONSerialization dataWithJSONObject:postDictionary options:0 error:&error];
     
@@ -326,19 +335,18 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
              return BLLOG(@"connection error: %@", connectionError);
          }
          
-         NSError *parseError = nil;
+         NSError *parseError;
          NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
-         
          NSString *serverErrors = [dict valueForKey:@"errors"];
+         
          if (serverErrors) {
              return BLLOG(@"server error: %@", serverErrors);
          }
-         
-         BLLOG(@"%@",dict);
-         
-         if (parseError) {
+         else if (parseError) {
              return BLLOG(@"parse error: %@", parseError);
          }
+         
+         BLLOG(@"%@",dict);
          
          [self _BL_insertPostWithDictionary:dict atIndex:0];
          

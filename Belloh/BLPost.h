@@ -18,7 +18,7 @@
 @property (nonatomic, copy) NSString *timestamp;
 @property (nonatomic, assign) float latitude;
 @property (nonatomic, assign) float longitude;
-@property (nonatomic, copy) NSString *id;
+@property (nonatomic, copy) NSString *identifier;
 
 - (void)setTimestampWithBSONId:(NSString *)BSONId;
 

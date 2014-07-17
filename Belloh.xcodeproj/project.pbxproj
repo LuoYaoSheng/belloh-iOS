@@ -19,6 +19,7 @@
 		253D65131893A3DA00DC60B5 /* ios_draft_belloh_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 253D65121893A3DA00DC60B5 /* ios_draft_belloh_small.png */; };
 		25593FAE1976ECA4007C0E04 /* UIColor+App.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FAD1976ECA4007C0E04 /* UIColor+App.m */; };
 		25593FB11976F521007C0E04 /* App.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FB01976F521007C0E04 /* App.m */; };
+		25593FB419773A7A007C0E04 /* NSObject+Classes.m in Sources */ = {isa = PBXBuildFile; fileRef = 25593FB319773A7A007C0E04 /* NSObject+Classes.m */; };
 		2579F30B197476ED00AF1BF9 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2579F30A197476ED00AF1BF9 /* WebViewController.m */; };
 		2579F30E19749B8A00AF1BF9 /* PlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2579F30D19749B8A00AF1BF9 /* PlaceholderTextView.m */; };
 		25C33239186248B000DA8271 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25C33238186248B000DA8271 /* Foundation.framework */; };
@@ -89,6 +90,8 @@
 		25593FAD1976ECA4007C0E04 /* UIColor+App.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+App.m"; sourceTree = "<group>"; };
 		25593FAF1976F521007C0E04 /* App.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = App.h; sourceTree = "<group>"; };
 		25593FB01976F521007C0E04 /* App.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = App.m; sourceTree = "<group>"; };
+		25593FB219773A7A007C0E04 /* NSObject+Classes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Classes.h"; path = "Belloh/NSObject+Classes.h"; sourceTree = "<group>"; };
+		25593FB319773A7A007C0E04 /* NSObject+Classes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Classes.m"; path = "Belloh/NSObject+Classes.m"; sourceTree = "<group>"; };
 		2579F309197476ED00AF1BF9 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		2579F30A197476ED00AF1BF9 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		2579F30C19749B8A00AF1BF9 /* PlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderTextView.h; sourceTree = "<group>"; };
@@ -336,6 +339,8 @@
 		25C669FE1975E653003C240B /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				25593FB219773A7A007C0E04 /* NSObject+Classes.h */,
+				25593FB319773A7A007C0E04 /* NSObject+Classes.m */,
 				25C669FF1975E679003C240B /* NSValue+MKCoordinateRegion.h */,
 				25C66A001975E679003C240B /* NSValue+MKCoordinateRegion.m */,
 				25C66A021975EBAD003C240B /* NSData+NSValue.h */,
@@ -484,6 +489,7 @@
 				25C669DD1975D623003C240B /* UIImageView+AFNetworking.m in Sources */,
 				25C669F81975D91B003C240B /* AFNetworkReachabilityManager.m in Sources */,
 				25C669FC1975D91B003C240B /* AFURLResponseSerialization.m in Sources */,
+				25593FB419773A7A007C0E04 /* NSObject+Classes.m in Sources */,
 				25C669FB1975D91B003C240B /* AFURLRequestSerialization.m in Sources */,
 				25C669DC1975D623003C240B /* UIButton+AFNetworking.m in Sources */,
 				25C669DF1975D623003C240B /* UIRefreshControl+AFNetworking.m in Sources */,
