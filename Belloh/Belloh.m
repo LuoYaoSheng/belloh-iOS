@@ -18,7 +18,7 @@ enum {
 static NSString *const BLMessageKeyName = @"message";
 static NSString *const BLSignatureKeyName = @"signature";
 static NSString *const BLLatitudeKeyName = @"lat";
-static NSString *const BLLongitudeKeyName = @"lon";
+static NSString *const BLLongitudeKeyName = @"lng";
 static NSString *const BLIdentifierKeyName = @"_id";
 static NSString *const BLThumbnailKeyName = @"thumb";
 

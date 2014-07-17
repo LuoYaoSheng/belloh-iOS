@@ -54,6 +54,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    self.mapView.mapType = MKMapTypeHybrid;
     self.locationManager = [[CLLocationManager alloc] init];
     [self.delegate mapViewControllerDidLoad:self];
 }

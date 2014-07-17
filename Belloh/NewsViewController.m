@@ -408,8 +408,10 @@
     post.latitude = location.latitude;
     post.longitude = location.longitude;
     __weak __typeof(self)weakSelf = self;
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [self.belloh BL_sendNewPost:post completion:^{
         [weakSelf.tableView reloadData];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
