@@ -89,7 +89,7 @@
 
 - (IBAction)addBookmark:(id)sender
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Bookmark this region" message:@"" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] ;
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Bookmark this region" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil] ;
     alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
     UITextField *textField = [alertView textFieldAtIndex:0];
     textField.placeholder = @"Bookmark name";
@@ -103,8 +103,13 @@
 {
     if (buttonIndex == 1) {
         NSString *name = [alertView textFieldAtIndex:0].text;
-        BLLOG(@"%@", name);
         
+        if ([name length] == 0) {
+            return [self addBookmark:nil];
+        }
+
+        BLLOG(@"%@", name);
+
         NSValue *value = [NSValue valueWithMKCoordinateRegion:self.mapView.region];
         NSData *data = [NSData dataWithValue:value];
         NSDictionary *bookmark = @{@"name": name, @"data": data};
