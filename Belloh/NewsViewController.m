@@ -302,6 +302,15 @@
     return YES;
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+    NSUInteger n = [self.belloh postCount];
+    if (proposedDestinationIndexPath.row >= n) {
+        return [NSIndexPath indexPathForRow:n-1 inSection:proposedDestinationIndexPath.section];
+    }
+    return proposedDestinationIndexPath;
+}
+
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
     BLPost *post = [self.belloh postAtIndex:sourceIndexPath.row];
