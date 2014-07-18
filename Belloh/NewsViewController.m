@@ -118,17 +118,36 @@
     [self.refreshControl addTarget:self action:@selector(handleRefresh) forControlEvents:UIControlEventValueChanged];
     [self setRefreshControl:self.refreshControl];
         
-    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showMap)];
+    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showMap:)];
     leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    leftSwipe.delegate = self;
     [self.view addGestureRecognizer:leftSwipe];
-    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showMap)];
+    /*
+    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showMap:)];
     rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    rightSwipe.delegate = self;
     [self.view addGestureRecognizer:rightSwipe];
+    */
 }
 
-- (void)showMap
+#pragma mark - UIGestureRecognizerDelegate methods
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    [self performSegueWithIdentifier:@"showMap" sender:self];
+    return ![(NavigationSearchBar *)self.navigationController.navigationBar active];
+}
+
+- (void)showMap:(UIGestureRecognizer *)gestureRecognizer
+{
+// TODO: slide map direction based on gesture.
+    BLLOG(@"%@", gestureRecognizer);
+    UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer *)gestureRecognizer;
+    if ([swipe direction] == UISwipeGestureRecognizerDirectionRight) {
+        [self performSegueWithIdentifier:@"showMapLeft" sender:self];
+    }
+    else if ([swipe direction] == UISwipeGestureRecognizerDirectionLeft) {
+        [self performSegueWithIdentifier:@"showMapRight" sender:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -165,6 +184,9 @@
         footer.frame = frame;
     } completion:^(BOOL finished) {*/
         [self.activityIndicator stopAnimating];
+        self.postCountLabel.hidden = NO;
+        int n = self.belloh.BL_postCount;
+        self.postCountLabel.text = [NSString stringWithFormat:@"%i Post%@", n, n > 1 ? @"s" : @""];
     //}];
 }
 
@@ -177,13 +199,14 @@
         footer.frame = frame;
     } completion:^(BOOL finished) {*/
         [self.activityIndicator startAnimating];
+        self.postCountLabel.hidden = YES;
     //}];
 }
 
 - (void)loadingPostsFinished
 {
     [self.tableView reloadData];
-    [self hideActivityIndicator];
+    [self.activityIndicator stopAnimating];
     [self.refreshControl endRefreshing];
 }
 
@@ -258,11 +281,11 @@
     
     if (indexPath.row >= [self.belloh BL_postCount] - 1) {
         if (self.belloh.BL_isRemainingPosts) {
-            [self showActivityIndicator];
+            [self.activityIndicator startAnimating];
             [self.belloh BL_loadAndAppendOlderPosts];
         }
         else {
-            [self.activityIndicator stopAnimating];
+            [self hideActivityIndicator];
         }
     }
     
@@ -381,7 +404,7 @@
 {
     NSString *identifier = [segue identifier];
     id dest = [segue destinationViewController];
-    if ([identifier isEqualToString:@"showMap"]) {
+    if ([identifier isEqualToString:@"showMapLeft"] || [identifier isEqualToString:@"showMapRight"]) {
         [(MapViewController *)dest setDelegate:self];
     }
     else if ([identifier isEqualToString:@"newPost"]) {

@@ -28,7 +28,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-
+    
+    self.miniMap.mapType = MKMapTypeHybrid;
+    
     if ([self.navBar respondsToSelector:@selector(barTintColor)]) {
         // iOS7
         self.navBar.barTintColor = [UIColor mainColor];

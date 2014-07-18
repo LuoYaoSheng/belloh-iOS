@@ -10,6 +10,7 @@
 
 @property (nonatomic, assign) BOOL leftSide;
 @property (nonatomic) UISearchBar *searchBar;
+@property (nonatomic, readonly) BOOL active;
 
 - (IBAction)hideSearchBar:(id)sender;
 

@@ -52,14 +52,10 @@
     _leftSide = leftSide;
 }
 
-- (void)setPlaceholder:(NSString *)placeholder
+- (BOOL)active
 {
-    self.searchBar.placeholder = placeholder;
-}
-
-- (NSString *)placeholder
-{
-    return self.searchBar.placeholder;
+    UINavigationItem *item = self.topItem;
+    return item.titleView != nil;
 }
 
 #pragma mark - IBActions

@@ -69,7 +69,7 @@
                                         </connections>
                                     </button>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRl-Gf-fJH">
-                                        <rect key="frame" x="0.0" y="213" width="320" height="290"/>
+                                        <rect key="frame" x="0.0" y="213" width="320" height="291"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="180" id="0dQ-Zg-ZBF"/>
                                         </constraints>
@@ -107,6 +107,7 @@
                                     <constraint firstItem="LnA-Hu-KSG" firstAttribute="trailing" secondItem="kJd-F0-r1N" secondAttribute="trailing" id="WDC-Xu-pHl"/>
                                     <constraint firstItem="TRl-Gf-fJH" firstAttribute="top" secondItem="Xrc-ZP-TYc" secondAttribute="bottom" constant="8" id="XKN-8b-5fv"/>
                                     <constraint firstItem="LnA-Hu-KSG" firstAttribute="trailing" secondItem="Xrc-ZP-TYc" secondAttribute="trailing" id="cnX-Dk-g4z"/>
+                                    <constraint firstAttribute="height" secondItem="TRl-Gf-fJH" secondAttribute="height" constant="213" id="kwE-9j-Ywp"/>
                                     <constraint firstItem="kJd-F0-r1N" firstAttribute="leading" secondItem="UEY-Fp-1Dz" secondAttribute="leading" constant="20" symbolic="YES" id="lCX-hq-DWL"/>
                                     <constraint firstItem="LnA-Hu-KSG" firstAttribute="leading" secondItem="kJd-F0-r1N" secondAttribute="leading" id="qaf-cH-0ab"/>
                                     <constraint firstItem="TRl-Gf-fJH" firstAttribute="leading" secondItem="UEY-Fp-1Dz" secondAttribute="leading" id="uGG-Gt-D6r"/>
@@ -117,7 +118,6 @@
                         <color key="backgroundColor" red="0.81960784310000001" green="0.61022109479999997" blue="0.18649940679999999" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="9oA-Wl-DSC" firstAttribute="trailing" secondItem="UEY-Fp-1Dz" secondAttribute="trailing" id="7qT-0h-bJv"/>
-                            <constraint firstAttribute="height" secondItem="TRl-Gf-fJH" secondAttribute="height" priority="900" constant="278" id="9hP-WL-vH6"/>
                             <constraint firstItem="9oA-Wl-DSC" firstAttribute="bottom" secondItem="UEY-Fp-1Dz" secondAttribute="top" id="Ufw-SR-lhE"/>
                             <constraint firstItem="9oA-Wl-DSC" firstAttribute="leading" secondItem="UEY-Fp-1Dz" secondAttribute="leading" id="VCM-0q-oAc"/>
                             <constraint firstItem="9oA-Wl-DSC" firstAttribute="leading" secondItem="Oq1-WW-gdN" secondAttribute="leading" id="Y3a-Ml-XvY"/>
@@ -147,11 +147,11 @@
                         <viewControllerLayoutGuide type="bottom" id="3fV-nO-BHa"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tg4-aq-CMy">
-                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="RBw-Gn-Zfv">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </mapView>
                         </subviews>
                         <constraints>
@@ -217,11 +217,22 @@
                                     <rect key="frame" x="0.0" y="12" width="320" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </activityIndicatorView>
+                                <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Number of posts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q8A-BG-veF">
+                                    <rect key="frame" x="20" y="5" width="280" height="33"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="Thonburi-Bold" family="Thonburi" pointSize="22"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="icx-Bn-b2a" firstAttribute="leading" secondItem="YL7-Jc-5hs" secondAttribute="leading" id="EfN-IU-gFv"/>
+                                <constraint firstAttribute="trailing" secondItem="Q8A-BG-veF" secondAttribute="trailing" constant="20" id="FLi-5Z-B4U"/>
                                 <constraint firstAttribute="trailing" secondItem="icx-Bn-b2a" secondAttribute="trailing" id="Rhs-TV-LrF"/>
+                                <constraint firstItem="Q8A-BG-veF" firstAttribute="leading" secondItem="YL7-Jc-5hs" secondAttribute="leading" constant="20" symbolic="YES" id="beg-17-ySH"/>
                                 <constraint firstItem="icx-Bn-b2a" firstAttribute="centerY" secondItem="YL7-Jc-5hs" secondAttribute="centerY" id="cEi-9q-xHz"/>
+                                <constraint firstAttribute="bottom" secondItem="Q8A-BG-veF" secondAttribute="bottom" constant="6" id="pDa-hX-U7T"/>
+                                <constraint firstItem="Q8A-BG-veF" firstAttribute="top" secondItem="YL7-Jc-5hs" secondAttribute="top" constant="5" id="sr3-PL-wYH"/>
                             </constraints>
                         </view>
                         <prototypes>
@@ -332,8 +343,10 @@
                     </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="icx-Bn-b2a" id="0gQ-8A-OdY"/>
-                        <segue destination="kIf-nA-PKG" kind="push" identifier="showMap" id="u4M-Z0-2Gb"/>
+                        <outlet property="postCountLabel" destination="Q8A-BG-veF" id="xxs-ic-dUm"/>
+                        <segue destination="kIf-nA-PKG" kind="push" identifier="showMapRight" id="u4M-Z0-2Gb"/>
                         <segue destination="s3b-Su-HbO" kind="push" identifier="showLink" id="Qtp-MP-kfA"/>
+                        <segue destination="kIf-nA-PKG" kind="custom" identifier="showMapLeft" customClass="PushSegueBack" id="eVY-YK-V5Q"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QRo-BM-I55" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -508,4 +521,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="eVY-YK-V5Q"/>
+    </inferredMetricsTieBreakers>
 </document>
