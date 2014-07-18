@@ -262,6 +262,9 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
     [request setValue:@"application/json" forHTTPHeaderField:@"content-type"];
     [request setHTTPMethod:@"GET"];
     
+    int num = (self.filter == nil ? BLNoPostsRemaining : BLNoFilteredResultsRemaining);
+    self->_remainingPosts &= ~num;
+    
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError){
         
         if (![UUID isEqualToString:self->_loadUUID]) {
@@ -284,14 +287,9 @@ static NSString *apiBaseURLString = @"http://www.belloh.com";
             }
             return;
         }
-        
-        int num = (self.filter == nil ? BLNoPostsRemaining : BLNoFilteredResultsRemaining);
-        
+                
         if ([postsArray count] == 0) {
             self->_remainingPosts |= num;
-        }
-        else {
-            self->_remainingPosts &= ~num;
         }
         
         if (completion) {
