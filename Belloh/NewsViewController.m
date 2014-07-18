@@ -10,6 +10,7 @@
 #import "NewsTableViewCell.h"
 #import "WebViewController.h"
 #import "NavigationSearchBar.h"
+#import "BottomTableViewCell.h"
 
 #import "UIImageView+AFNetworking.h"
 #import "NSValue+MKCoordinateRegion.h"
@@ -44,8 +45,8 @@
         if (data) {
             NSValue *region = [data valueWithObjCType:@encode(MKCoordinateRegion)];
             self.belloh.region = [region MKCoordinateRegionValue];
-            [self.belloh BL_loadPosts];
-            [self BL_setNavBarTitleToLocationName];
+            [self.belloh loadPosts];
+            [self setNavBarTitleToLocationName];
         }
         else {
             self.locationManager = [[CLLocationManager alloc] init];
@@ -70,8 +71,8 @@
     CLLocation *location = [locations lastObject];
     MKCoordinateSpan span = MKCoordinateSpanMake(0.02167,0.03193);
     self.belloh.region = MKCoordinateRegionMake(location.coordinate, span);
-    [self.belloh BL_loadPosts];
-    [self BL_setNavBarTitleToLocationName];
+    [self.belloh loadPosts];
+    [self setNavBarTitleToLocationName];
     manager.delegate = nil;
 }
 
@@ -139,8 +140,6 @@
 
 - (void)showMap:(UIGestureRecognizer *)gestureRecognizer
 {
-// TODO: slide map direction based on gesture.
-    BLLOG(@"%@", gestureRecognizer);
     UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer *)gestureRecognizer;
     if ([swipe direction] == UISwipeGestureRecognizerDirectionRight) {
         [self performSegueWithIdentifier:@"showMapLeft" sender:self];
@@ -158,7 +157,7 @@
 
 - (void)handleRefresh
 {
-    [self.belloh BL_loadPosts];
+    [self.belloh loadPosts];
 }
 
 - (void)updateEllipsis:(NSTimer *)timer
@@ -175,39 +174,19 @@
     }
 }
 
-- (void)hideActivityIndicator
-{/*
-    UIView *footer = self.activityIndicator.superview;
-    CGRect frame = footer.frame;
-    frame.size.height = 0;
-    [UIView animateWithDuration:2 delay:0 options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-        footer.frame = frame;
-    } completion:^(BOOL finished) {*/
-        [self.activityIndicator stopAnimating];
-        self.postCountLabel.hidden = NO;
-        int n = self.belloh.BL_postCount;
-        self.postCountLabel.text = [NSString stringWithFormat:@"%i Post%@", n, n > 1 ? @"s" : @""];
-    //}];
-}
-
-- (void)showActivityIndicator
-{/*
-    UIView *footer = self.activityIndicator.superview;
-    CGRect frame = footer.frame;
-    frame.size.height = 44.f;
-    [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-        footer.frame = frame;
-    } completion:^(BOOL finished) {*/
-        [self.activityIndicator startAnimating];
-        self.postCountLabel.hidden = YES;
-    //}];
-}
-
-- (void)loadingPostsFinished
+- (void)loadingPostsSucceeded
 {
     [self.tableView reloadData];
-    [self.activityIndicator stopAnimating];
     [self.refreshControl endRefreshing];
+}
+
+- (void)loadingPostsFailedWithError:(NSError *)error
+{
+    [self.refreshControl endRefreshing];
+    if (error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 #pragma mark - UITextView delegate
@@ -237,15 +216,46 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.belloh BL_postCount];
+    return [self.belloh postCount] + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *ThumbCellIdentifier = @"ThumbCell";
     static NSString *NoThumbCellIdentifier = @"NoThumbCell";
+    static NSString *BottomCellIdentifier = @"BottomCell";
     
-    BLPost *post = [self.belloh BL_postAtIndex:indexPath.row];
+    if (indexPath.row >= [self.belloh postCount]) {
+        BottomTableViewCell *bottomCell = [tableView dequeueReusableCellWithIdentifier:BottomCellIdentifier forIndexPath:indexPath];
+        
+        if (self.belloh.isRemainingPosts) {
+            [bottomCell.activityIndicator startAnimating];
+            bottomCell.postCountLabel.hidden = YES;
+            if ([self.belloh lastPost]) {
+                [self.belloh loadAndAppendOlderPosts];
+            }
+        }
+        else {
+            [bottomCell.activityIndicator stopAnimating];
+            bottomCell.postCountLabel.hidden = NO;
+            int n = self.belloh.postCount;
+            NSString *text;
+            if (n == 0) {
+                text = @"No Posts";
+            }
+            else if (n == 1) {
+                text = @"1 Post";
+            }
+            else {
+                text = [NSString stringWithFormat:@"%i Posts", n];
+            }
+            bottomCell.postCountLabel.text = text;
+        }
+        
+        return bottomCell;
+    }
+    
+    BLPost *post = [self.belloh postAtIndex:indexPath.row];
     
     NewsTableViewCell *cell;
     
@@ -279,16 +289,6 @@
     cell.messageView.delegate = self;
     [cell setContent:post];
     
-    if (indexPath.row >= [self.belloh BL_postCount] - 1) {
-        if (self.belloh.BL_isRemainingPosts) {
-            [self.activityIndicator startAnimating];
-            [self.belloh BL_loadAndAppendOlderPosts];
-        }
-        else {
-            [self hideActivityIndicator];
-        }
-    }
-    
     return cell;
 }
 
@@ -296,12 +296,15 @@
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.row >= [self.belloh postCount]) {
+        return NO;
+    }
     return YES;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-    BLPost *post = [self.belloh BL_postAtIndex:sourceIndexPath.row];
+    BLPost *post = [self.belloh postAtIndex:sourceIndexPath.row];
     @try {
         [self.belloh removePostAtIndex:sourceIndexPath.row];
         [self.belloh insertPost:post atIndex:destinationIndexPath.row];
@@ -325,7 +328,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BLPost *post = [self.belloh BL_postAtIndex:indexPath.row];
+    if (indexPath.row >= [self.belloh postCount]) {
+        return 44.f;
+    }
+    
+    BLPost *post = [self.belloh postAtIndex:indexPath.row];
     NSString *text = post.message;
     
     BOOL isOSAtLeast7 = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0");
@@ -386,11 +393,10 @@
     [defaults setObject:data forKey:@"region"];
     [defaults synchronize];
     
-    [self.belloh BL_removeAllPosts];
+    [self.belloh removeAllPosts];
     [self.tableView reloadData];
-    [self showActivityIndicator];
-    [self.belloh BL_loadPosts];
-    [self BL_setNavBarTitleToLocationName];
+    [self.belloh loadPosts];
+    [self setNavBarTitleToLocationName];
 }
 
 - (void)mapViewControllerDidLoad:(MapViewController *)controller
@@ -432,9 +438,13 @@
     post.longitude = location.longitude;
     __weak __typeof(self)weakSelf = self;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [self.belloh BL_sendNewPost:post completion:^{
+    [self.belloh sendNewPost:post completion:^(NSError *error){
         [weakSelf.tableView reloadData];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        if (error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
     }];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -446,7 +456,7 @@
 
 #pragma mark - Geocoding
 
-- (void)BL_setNavBarTitleToLocationName
+- (void)setNavBarTitleToLocationName
 {
     CLLocationCoordinate2D center = self.belloh.region.center;
     CLLocation *location = [[CLLocation alloc] initWithLatitude:center.latitude longitude:center.longitude];

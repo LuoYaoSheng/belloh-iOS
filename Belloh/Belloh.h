@@ -12,12 +12,11 @@
 // NSLog extension which prints the name of the calling class and method
 #define BLLOG(format,...) NSLog([NSString stringWithFormat:@"%%@->%%@ %@",format],NSStringFromClass([self class]),NSStringFromSelector(_cmd),##__VA_ARGS__)
 
-typedef void (^BLCompletionHandler)(void);
-
 @protocol BellohDelegate <NSObject>
 
 @optional
-- (void)loadingPostsFinished;
+- (void)loadingPostsSucceeded;
+- (void)loadingPostsFailedWithError:(NSError *)error;
 
 @end
 
@@ -29,15 +28,15 @@ typedef void (^BLCompletionHandler)(void);
 @property (nonatomic, weak) id<BellohDelegate> delegate;
 
 - (id)initWithRegion:(MKCoordinateRegion)region;
-- (NSUInteger)BL_postCount;
+- (NSUInteger)postCount;
 - (void)removePostAtIndex:(NSUInteger)index;
 - (void)insertPost:(BLPost *)post atIndex:(NSUInteger)index;
-- (BLPost *)BL_postAtIndex:(NSUInteger)index;
-- (BLPost *)BL_lastPost;
-- (void)BL_loadAndAppendOlderPosts;
-- (void)BL_loadPosts;
-- (void)BL_sendNewPost:(BLPost *)newPost completion:(void (^)(void))completion;
-- (void)BL_removeAllPosts;
-- (BOOL)BL_isRemainingPosts;
+- (BLPost *)postAtIndex:(NSUInteger)index;
+- (BLPost *)lastPost;
+- (void)loadAndAppendOlderPosts;
+- (void)loadPosts;
+- (void)sendNewPost:(BLPost *)newPost completion:(void (^)(NSError *))completion;
+- (void)removeAllPosts;
+- (BOOL)isRemainingPosts;
 
 @end
