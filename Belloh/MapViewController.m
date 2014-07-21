@@ -67,10 +67,10 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSString *identifier = segue.identifier;
-    if ([identifier isEqualToString:@"showBookmarks"]) {
-        BookmarksViewController *dest = (BookmarksViewController *)segue.destinationViewController;
-        dest.delegate = self;
+    if ([segue.identifier isEqualToString:@"showBookmarks"]) {
+        UINavigationController *nav = (UINavigationController *)segue.destinationViewController;
+        BookmarksViewController *vc = (BookmarksViewController *)[nav.viewControllers firstObject];
+        [vc setDelegate:self];
     }
 }
 

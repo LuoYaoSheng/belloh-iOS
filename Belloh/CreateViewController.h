@@ -25,7 +25,6 @@
 @property (nonatomic, weak) id<CreateViewControllerDelegate> delegate;
 @property (nonatomic, weak) IBOutlet PlaceholderTextView *messageView;
 @property (nonatomic, weak) IBOutlet UIButton *postButton;
-@property (nonatomic, weak) IBOutlet UINavigationBar *navBar;
 @property (nonatomic, weak) IBOutlet UITextField *signatureField;
 @property (nonatomic, weak) IBOutlet MKMapView *miniMap;
 

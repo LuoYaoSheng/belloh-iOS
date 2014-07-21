@@ -21,15 +21,6 @@
 {
     [super viewDidLoad];
     
-    if ([self.navBar respondsToSelector:@selector(barTintColor)]) {
-        // iOS7
-        self.navBar.barTintColor = [UIColor mainColor];
-    }
-    else {
-        // older
-        self.navBar.tintColor = [UIColor mainColor];
-    }
-    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.bookmarks = [defaults objectForKey:@"bookmarks"];
     
@@ -45,7 +36,7 @@
     
     [self.tableView setEditing:NO animated:YES];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(edit:)];
-    [self.navBar.topItem setRightBarButtonItem:item animated:YES];
+    [self.navigationItem setRightBarButtonItem:item animated:YES];
 }
 
 #pragma mark - IBActions
@@ -54,7 +45,7 @@
 {
     [self.tableView setEditing:YES animated:YES];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneEditing:)];
-    [self.navBar.topItem setRightBarButtonItem:item animated:YES];
+    [self.navigationItem setRightBarButtonItem:item animated:YES];
 }
 
 - (IBAction)cancel:(id)sender

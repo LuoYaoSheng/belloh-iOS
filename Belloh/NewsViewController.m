@@ -423,7 +423,9 @@
         [(MapViewController *)dest setDelegate:self];
     }
     else if ([identifier isEqualToString:@"newPost"]) {
-        [(CreateViewController *)dest setDelegate:self];
+        UINavigationController *nav = (UINavigationController *)dest;
+        CreateViewController *vc = (CreateViewController *)[nav.viewControllers firstObject];
+        [vc setDelegate:self];
     }
     else if ([identifier isEqualToString:@"showLink"]) {
         [(WebViewController *)dest setUrl:self.selectedURL];

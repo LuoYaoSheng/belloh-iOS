@@ -21,7 +21,6 @@
 
 @property (nonatomic, weak) id<BookmarksViewControllerDelegate> delegate;
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
-@property (nonatomic, weak) IBOutlet UINavigationBar *navBar;
 
 - (IBAction)edit:(id)sender;
 - (IBAction)cancel:(id)sender;

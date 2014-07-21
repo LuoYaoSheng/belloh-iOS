@@ -31,15 +31,6 @@
     
     self.miniMap.mapType = MKMapTypeHybrid;
     
-    if ([self.navBar respondsToSelector:@selector(barTintColor)]) {
-        // iOS7
-        self.navBar.barTintColor = [UIColor mainColor];
-    }
-    else {
-        // older
-        self.navBar.tintColor = [UIColor mainColor];
-    }
-    
     UITapGestureRecognizer *recog = [[UITapGestureRecognizer alloc] initWithTarget:self.view action:@selector(hideKeyboard:)];
     recog.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:recog];
